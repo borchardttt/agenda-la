@@ -1,0 +1,14 @@
+{
+    "name": "alefjuan/agenda-la",
+    "description": "Projeto básico em PHP com estrutura similar ao Laravel",
+    "autoload": {
+      "psr-4": {
+        "App\\": "app/"
+      }
+    },
+    "require": {
+      "php": ">=8.3",
+      "guzzlehttp/guzzle": "^7.0"
+    }
+  }
+  
