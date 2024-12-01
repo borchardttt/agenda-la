@@ -49,7 +49,6 @@
 	</div>
 
 	<script>
-		// Função que faz o login via AJAX
 		function loginUser() {
 			const form = document.getElementById('loginForm');
 			const formData = new FormData(form);
@@ -82,9 +81,8 @@
 				});
 		}
 
-		// Atribuindo a função ao evento de clique do botão
 		document.getElementById('loginButton').addEventListener('click', function () {
-			loginUser(); // Chama a função loginUser ao clicar no botão
+			loginUser();
 		});
 	</script>
 

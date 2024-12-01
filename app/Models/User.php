@@ -76,18 +76,15 @@ class User
 	}
 	public function authenticate($email, $password)
 	{
-		$sql = "SELECT * FROM {$this->table} WHERE email = :email";
+		$sql = "SELECT * FROM {$this->table} WHERE email = :email AND password = SHA2(:password, 256)";
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindParam(':email', $email);
+		$stmt->bindParam(':password', $password);
 		$stmt->execute();
 		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-		if ($user && password_verify($password, $user['password'])) {
-			return $user;
-		}
-
-		return false;
+		return $user ?: false;
 	}
+
 
 
 }

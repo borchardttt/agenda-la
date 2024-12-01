@@ -30,6 +30,8 @@ services:
       MYSQL_DATABASE: agenda_la
       MYSQL_USER: user
       MYSQL_PASSWORD: agenda_la_pwd
+    volumes:
+      - ./config/database.sql:/docker-entrypoint-initdb.d/database.sql
     networks:
       - app-network
     ports:

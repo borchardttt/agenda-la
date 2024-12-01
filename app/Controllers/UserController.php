@@ -17,9 +17,16 @@ class UserController
 	{
 		include 'app/Views/auth/login.php';
 	}
+	public function getAll()
+	{
+		$users = $this->user->getAll();
+		include 'app/Views/admin/users.php';
+
+	}
 
 	public function login()
 	{
+		session_start();
 		$email = $_POST['email'] ?? '';
 		$password = $_POST['password'] ?? '';
 
@@ -35,10 +42,13 @@ class UserController
 
 		if ($user) {
 			$_SESSION['user'] = $user;
+
+			$redirect = ($user['type'] === 'admin') ? '/admin-home' : '/dashboard';
+
 			echo json_encode([
 				'status' => 'success',
 				'message' => 'Login bem-sucedido',
-				'redirect' => '/dashboard'
+				'redirect' => $redirect
 			]);
 		} else {
 			echo json_encode([
@@ -49,5 +59,20 @@ class UserController
 
 		exit;
 	}
+
+	public function logout()
+	{
+		if (session_status() == PHP_SESSION_NONE) {
+			session_start();
+		}
+
+		$_SESSION = [];
+
+		session_destroy();
+
+		header('Location: /login');
+		exit;
+	}
+
 
 }

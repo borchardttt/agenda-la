@@ -16,10 +16,11 @@ PRIMARY KEY (`id`)
 
 -- Inserção do usuário administrador
 INSERT INTO `users` (`name`, `email`, `password`, `type`)
-VALUES ('Administrador Agenda-La', 'adming@agendala.com', MD5('admin2024'), 'admin');
+VALUES ('Administrador Agenda-La', 'adming@agendala.com', SHA2('admin2024', 256), 'admin');
 
 INSERT INTO `users` (`name`, `email`, `password`, `type`)
-VALUES ('João', 'joao@agendala.com', MD5('barbeiroJoao'), 'barber');
+VALUES ('João', 'joao@agendala.com', SHA2('barbeiroJoao', 256), 'barber');
+
 
 -- Criação da tabela `barbers_schedules` (agendamentos de barbeiros)
 CREATE TABLE IF NOT EXISTS `barbers_schedules` (

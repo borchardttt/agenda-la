@@ -5,5 +5,9 @@ return [
 	'/about' => ['controller' => 'App\Controllers\HomeController', 'method' => 'about'],
 	'/services' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'index'],
 	'/login' => ['controller' => 'App\Controllers\UserController', 'method' => 'index'],
-	'/authenticate' => ['controller' => 'App\Controllers\UserController', 'method' => 'login']
+	'/logout' => ['controller' => 'App\Controllers\UserController', 'method' => 'logout'],
+	'/authenticate' => ['controller' => 'App\Controllers\UserController', 'method' => 'login'],
+	'/admin-home' => ['controller' => 'App\Controllers\HomeController', 'method' => 'adminHome'],
+	'/users' => ['controller' => 'App\Controllers\UserController', 'method' => 'getAll'],
+	'/dashboard' => ['controller' => 'App\Controllers\BarberController', 'method' => 'index'],
 ];
