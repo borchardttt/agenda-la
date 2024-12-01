@@ -10,7 +10,6 @@
 
 <body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
 
-	<!-- Header -->
 	<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
 		<div class="container mx-auto flex justify-between items-center">
 			<div class="text-lg font-bold">
@@ -21,11 +20,11 @@
 				<a href="#beneficios" class="hover:text-[#D3B18C]">Benefícios</a>
 				<a href="#contato" class="hover:text-[#D3B18C]">Contato</a>
 				<a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
+				<a href="/login" class="hover:text-[#D3B18C]">Acessar</a>
 			</nav>
 		</div>
 	</header>
 
-	<!-- Hero Section -->
 	<section class="bg-[#5C4033] text-[#F4E1C1] py-20">
 		<div class="container mx-auto text-center">
 			<h2 class="text-3xl font-semibold mb-4">Simplifique seu agendamento de cortes de cabelo!</h2>
@@ -35,7 +34,6 @@
 		</div>
 	</section>
 
-	<!-- Sobre -->
 	<section id="sobre" class="container mx-auto py-20 text-center">
 		<h3 class="text-2xl font-semibold mb-6">Sobre o Sistema</h3>
 		<p class="text-lg text-[#5C4033] max-w-3xl mx-auto">O Agenda-la foi criado para facilitar a vida dos barbeiros e
@@ -43,7 +41,6 @@
 			e seus clientes podem marcar horários de maneira prática, sem precisar ligar ou ir até a loja.</p>
 	</section>
 
-	<!-- Benefícios -->
 	<section id="beneficios" class="bg-[#D3B18C] py-20">
 		<div class="container mx-auto text-center">
 			<h3 class="text-2xl font-semibold mb-6">Benefícios do Sistema</h3>
@@ -67,7 +64,6 @@
 		</div>
 	</section>
 
-	<!-- Contato -->
 	<section id="contato" class="container mx-auto py-20 text-center">
 		<h3 class="text-2xl font-semibold mb-6">Entre em Contato</h3>
 		<p class="text-lg text-[#5C4033] mb-6">Dúvidas ou quer saber mais sobre o Agenda-la? Entre em contato conosco!</p>
@@ -75,7 +71,6 @@
 			class="bg-[#5C4033] text-[#F4E1C1] py-3 px-6 rounded-full text-xl hover:bg-[#5C4033]">Enviar E-mail</a>
 	</section>
 
-	<!-- Footer -->
 	<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
 		<p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
 	</footer>

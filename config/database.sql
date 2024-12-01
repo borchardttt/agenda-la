@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 `name` VARCHAR(255) NOT NULL,
 `email` VARCHAR(255) NOT NULL,
 `password` VARCHAR(255) NOT NULL,
-`type` ENUM('client', 'barber', 'admin') NOT NULL, -- Tipo do usuário
+`type` ENUM('client', 'barber', 'admin') NOT NULL,
 `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`)
@@ -16,7 +16,11 @@ PRIMARY KEY (`id`)
 
 -- Inserção do usuário administrador
 INSERT INTO `users` (`name`, `email`, `password`, `type`)
-VALUES ('Administrador Agenda-La', 'adming@agendala.com', MD5('admin2024'), 'admin');
+VALUES ('Administrador Agenda-La', 'adming@agendala.com', SHA2('admin2024', 256), 'admin');
+
+INSERT INTO `users` (`name`, `email`, `password`, `type`)
+VALUES ('João', 'joao@agendala.com', SHA2('barbeiroJoao', 256), 'barber');
+
 
 -- Criação da tabela `barbers_schedules` (agendamentos de barbeiros)
 CREATE TABLE IF NOT EXISTS `barbers_schedules` (
