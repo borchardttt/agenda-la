@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   php-fpm:
-    image: php:8.3-fpm
+    build: .
     container_name: php-fpm
     volumes:
       - ./:/var/www
@@ -62,6 +62,7 @@ services:
     networks:
       - app-network
     restart: unless-stopped
+
 networks:
   app-network:
     driver: bridge
