@@ -67,6 +67,15 @@ class User
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+	public function getByEmail($email)
+	{
+		$sql = "SELECT * FROM {$this->table} WHERE email = :email";
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->bindParam(':email', $email);
+		$stmt->execute();
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 	public function delete()
 	{
 		$sql = "DELETE FROM {$this->table} WHERE id = :id";
@@ -74,6 +83,26 @@ class User
 		$stmt->bindParam(':id', $this->id);
 		return $stmt->execute();
 	}
+
+	public function register($name, $email, $password){ 
+
+		$existingUser = $this->getByEmail($email);
+		if ($existingUser){
+			return false;
+		}
+
+		$sql = "INSERT INTO {$this->table}
+						(name, email, password, type, created_at, updated_at)
+						VALUES (:name, :email, :password, 'client', NOW(), NOW())";
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+		$stmt->execute();
+		$user = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $user ?: false;
+	}
+
 	public function authenticate($email, $password)
 	{
 		$sql = "SELECT * FROM {$this->table} WHERE email = :email AND password = SHA2(:password, 256)";

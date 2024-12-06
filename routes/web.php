@@ -10,4 +10,6 @@ return [
 	'/admin-home' => ['controller' => 'App\Controllers\HomeController', 'method' => 'adminHome'],
 	'/users' => ['controller' => 'App\Controllers\UserController', 'method' => 'getAll'],
 	'/dashboard' => ['controller' => 'App\Controllers\BarberController', 'method' => 'index'],
+	'/register' => ['controller' => 'App\Controllers\LoginController', 'method' => 'index'],
+	'/user-registration' => ['controller' => 'App\Controllers\UserController', 'method' => 'register'],
 ];
