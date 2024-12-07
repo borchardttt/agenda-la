@@ -1,12 +1,18 @@
 <?php
 
 namespace App\Controllers;
+
+use App\Models\Login;
 use PDO;
 
 class LoginController
 {
-	private $table = 'users';
-	private $pdo;
+
+	private $service;
+	public function __construct(Login $service)
+	{
+		$this->service = $service;
+	}
 
 	public function index(): void
 	{
@@ -30,7 +36,7 @@ class LoginController
 			exit;
 		}
 
-		$user = $this->authenticate($email, $password);
+		$user = $this->service->authenticate($email, $password);
 
 		if ($user) {
 			$_SESSION['user'] = $user;
@@ -50,16 +56,6 @@ class LoginController
 		}
 
 		exit;
-	}
-	public function authenticate($email, $password)
-	{
-		$sql = "SELECT * FROM {$this->table} WHERE email = :email AND password = SHA2(:password, 256)";
-		$stmt = $this->pdo->prepare($sql);
-		$stmt->bindParam(':email', $email);
-		$stmt->bindParam(':password', $password);
-		$stmt->execute();
-		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-		return $user ?: false;
 	}
 	public function logout()
 	{

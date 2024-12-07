@@ -11,7 +11,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 foreach ($routes as $routePattern => $route) {
     $pattern = preg_replace('/{(\w+)}/', '(?P<$1>\w+)', $routePattern);
-    $pattern = "#^$pattern$#";  
+    $pattern = "#^$pattern$#";
 
     if (preg_match($pattern, $requestUri, $matches)) {
 
@@ -34,7 +34,7 @@ foreach ($routes as $routePattern => $route) {
                 $controller = new $controllerClass();
             }
 
-            $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY); // Filtra apenas os parâmetros nomeados
+            $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
             call_user_func_array([$controller, $method], $params);
         } else {
             http_response_code(500);
