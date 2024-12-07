@@ -13,7 +13,9 @@ class Service
 	public $name;
 	public $description;
 	public $price;
-	public $created_at;
+
+	public $time;
+	//public $created_at;
 
 	public function __construct(PDO $pdo)
 	{
@@ -23,13 +25,14 @@ class Service
 	public function save()
 	{
 		if (empty($this->id)) {
-			$sql = "INSERT INTO {$this->table} (name, description, price, created_at) 
-                    VALUES (:name, :description, :price, :created_at)";
+			$sql = "INSERT INTO {$this->table} (name, price, time) 
+                    VALUES (:name, :price, :time)";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->bindParam(':name', $this->name);
-			$stmt->bindParam(':description', $this->description);
+			//$stmt->bindParam(':description', $this->description);
 			$stmt->bindParam(':price', $this->price);
-			$stmt->bindParam(':created_at', $this->created_at);
+			$stmt->bindParam(':time', $this->time);
+			//$stmt->bindParam(':created_at', $this->created_at);
 			return $stmt->execute();
 		} else {
 			$sql = "UPDATE {$this->table} 
@@ -37,9 +40,10 @@ class Service
                     WHERE id = :id";
 			$stmt = $this->pdo->prepare($sql);
 			$stmt->bindParam(':name', $this->name);
-			$stmt->bindParam(':description', $this->description);
+			//$stmt->bindParam(':description', $this->description);
 			$stmt->bindParam(':price', $this->price);
-			$stmt->bindParam(':created_at', $this->created_at);
+			$stmt->bindParam(':time', $this->time);
+			//$stmt->bindParam(':created_at', $this->created_at);
 			$stmt->bindParam(':id', $this->id);
 			return $stmt->execute();
 		}
@@ -62,11 +66,12 @@ class Service
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
-	public function delete()
-	{
-		$sql = "DELETE FROM {$this->table} WHERE id = :id";
-		$stmt = $this->pdo->prepare($sql);
-		$stmt->bindParam(':id', $this->id);
-		return $stmt->execute();
-	}
+	public function deleteService($id)
+{
+    $stmt = $this->pdo->prepare('DELETE FROM services WHERE id = :id');
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    return $stmt->execute(); // Retorna true em caso de sucesso ou false em caso de falha
+}
+
 }
