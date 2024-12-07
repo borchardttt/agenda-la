@@ -12,4 +12,8 @@ return [
 	'/dashboard' => ['controller' => 'App\Controllers\BarberController', 'method' => 'index'],
 	'/register' => ['controller' => 'App\Controllers\LoginController', 'method' => 'index'],
 	'/user-registration' => ['controller' => 'App\Controllers\UserController', 'method' => 'register'],
+	'/create-service' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'create'],
+	'/admin/services/create' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'store'],
+	'/admin/services/delete/{id}' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'delete'],
 ];
+?>
