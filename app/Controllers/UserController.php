@@ -24,55 +24,41 @@ class UserController
 
 	}
 
-	public function login()
+	public function register()
 	{
-		session_start();
+		$name = $_POST['name'] ?? '';
 		$email = $_POST['email'] ?? '';
 		$password = $_POST['password'] ?? '';
 
-		if (empty($email) || empty($password)) {
+		if (empty($name) || empty($email) || empty($password)) {
 			echo json_encode([
 				'status' => 'error',
 				'message' => 'Email e senha são obrigatórios.'
 			]);
-			exit;
+			return;
 		}
 
-		$user = $this->user->authenticate($email, $password);
+		$user = $this->user->register($name, $email, $password);
+
+		var_dump($user);
 
 		if ($user) {
 			$_SESSION['user'] = $user;
 
-			$redirect = ($user['type'] === 'admin') ? '/admin-home' : '/dashboard';
+			$redirect = '/login';
 
 			echo json_encode([
 				'status' => 'success',
-				'message' => 'Login bem-sucedido',
+				'message' => 'Usuario cadastrado',
 				'redirect' => $redirect
 			]);
 		} else {
 			echo json_encode([
 				'status' => 'error',
-				'message' => 'Credenciais inválidas.'
+				'message' => 'Usuario já existe Controller',
 			]);
 		}
-
-		exit;
+		return;
 	}
-
-	public function logout()
-	{
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-		}
-
-		$_SESSION = [];
-
-		session_destroy();
-
-		header('Location: /login');
-		exit;
-	}
-
 
 }

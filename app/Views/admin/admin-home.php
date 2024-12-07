@@ -21,7 +21,7 @@ session_start();
 				<a href="#dashboard" class="hover:text-[#D3B18C]">Dashboard</a>
 				<a href="#usuarios" class="hover:text-[#D3B18C]">Usuários</a>
 				<a href="#relatorios" class="hover:text-[#D3B18C]">Relatórios</a>
-
+				<a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
 				<?php if (isset($_SESSION['user'])): ?>
 					<span class="font-semibold">Bem-vindo, <?php echo htmlspecialchars($_SESSION['user']['name']); ?>!</span>
 					<a href="/logout" class="hover:text-[#D3B18C]">Logout</a>
