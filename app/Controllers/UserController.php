@@ -24,42 +24,6 @@ class UserController
 
 	}
 
-	public function login()
-	{
-		session_start();
-		$email = $_POST['email'] ?? '';
-		$password = $_POST['password'] ?? '';
-
-		if (empty($email) || empty($password)) {
-			echo json_encode([
-				'status' => 'error',
-				'message' => 'Email e senha são obrigatórios.'
-			]);
-			exit;
-		}
-
-		$user = $this->user->authenticate($email, $password);
-
-		if ($user) {
-			$_SESSION['user'] = $user;
-
-			$redirect = ($user['type'] === 'admin') ? '/admin-home' : '/dashboard';
-
-			echo json_encode([
-				'status' => 'success',
-				'message' => 'Login bem-sucedido',
-				'redirect' => $redirect
-			]);
-		} else {
-			echo json_encode([
-				'status' => 'error',
-				'message' => 'Credenciais inválidas.'
-			]);
-		}
-
-		exit;
-	}
-
 	public function register()
 	{
 		$name = $_POST['name'] ?? '';
@@ -78,7 +42,7 @@ class UserController
 
 		var_dump($user);
 
-		if ($user){
+		if ($user) {
 			$_SESSION['user'] = $user;
 
 			$redirect = '/login';
@@ -88,7 +52,7 @@ class UserController
 				'message' => 'Usuario cadastrado',
 				'redirect' => $redirect
 			]);
-		} else {	
+		} else {
 			echo json_encode([
 				'status' => 'error',
 				'message' => 'Usuario já existe Controller',
@@ -96,20 +60,5 @@ class UserController
 		}
 		return;
 	}
-
-	public function logout()
-	{
-		if (session_status() == PHP_SESSION_NONE) {
-			session_start();
-		}
-
-		$_SESSION = [];
-
-		session_destroy();
-
-		header('Location: /login');
-		exit;
-	}
-
 
 }

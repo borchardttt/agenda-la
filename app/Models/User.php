@@ -84,10 +84,11 @@ class User
 		return $stmt->execute();
 	}
 
-	public function register($name, $email, $password){ 
+	public function register($name, $email, $password)
+	{
 
 		$existingUser = $this->getByEmail($email);
-		if ($existingUser){
+		if ($existingUser) {
 			return false;
 		}
 
@@ -96,17 +97,6 @@ class User
 						VALUES (:name, :email, :password, 'client', NOW(), NOW())";
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindParam(':name', $name);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $password);
-		$stmt->execute();
-		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-		return $user ?: false;
-	}
-
-	public function authenticate($email, $password)
-	{
-		$sql = "SELECT * FROM {$this->table} WHERE email = :email AND password = SHA2(:password, 256)";
-		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindParam(':email', $email);
 		$stmt->bindParam(':password', $password);
 		$stmt->execute();
