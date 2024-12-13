@@ -74,4 +74,52 @@ class ServicesController
     }
 }
 
+public function edit($id)
+    {
+        // Buscar o serviço por ID para pré-preencher o formulário de edição
+        $service = $this->service->getById($id);
+        if (!$service) {
+            return "Serviço não encontrado!";
+        }
+
+        // Exibir o formulário de edição com os dados do serviço
+        include 'app/Views/admin/edit-service.php';
+    }
+
+    public function update($id)
+    {
+        // Receber os dados do formulário de edição
+        $name = $_POST['name'] ?? '';
+        $price = $_POST['price'] ?? '';
+        $time = $_POST['time'] ?? '';
+        $description = $_POST['description'] ?? '';
+
+        // Obter o serviço do banco de dados
+        $service = $this->service->getById($id);
+        if (!$service) {
+            return "Serviço não encontrado!";
+        }
+
+        // Atualizar os dados do serviço
+        $service->name = $name;
+        $service->price = $price;
+        $service->time = $time;
+        $service->description = $description;
+
+        // Salvar o serviço atualizado no banco
+        if ($this->service->update($service)) {
+            // Caso de sucesso, redirecionar ou exibir mensagem
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Serviço atualizado com sucesso!'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Erro ao atualizar o serviço!'
+            ]);
+        }
+    }
+
+
 }

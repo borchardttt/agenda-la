@@ -15,6 +15,8 @@ return [
 	'/create-service' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'create'],
 	'/admin/services/create' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'store'],
 	'/admin/services/delete/{id}' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'delete'],
+	'/admin/services/edit/{id}' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'edit'],
+	'/admin/services/update/{id}' => ['controller' => 'App\Controllers\ServicesController', 'method' => 'update'],
 	'/scheduling/create' => ['controller' => 'App\Controllers\SchedulingController', 'method' => 'create'],
 	'/scheduling' => ['controller' => 'App\Controllers\SchedulingController', 'method' => 'getAll'],
 	'/scheduling/{id}' => ['controller' => 'App\Controllers\SchedulingController', 'method' => 'getById'],

@@ -67,11 +67,25 @@ class Service
 	}
 
 	public function deleteService($id)
-{
-    $stmt = $this->pdo->prepare('DELETE FROM services WHERE id = :id');
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+	{
+		$stmt = $this->pdo->prepare('DELETE FROM services WHERE id = :id');
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-    return $stmt->execute(); // Retorna true em caso de sucesso ou false em caso de falha
+		return $stmt->execute(); // Retorna true em caso de sucesso ou false em caso de falha
+	}
+
+	public function update(Service $service)
+{
+    $sql = "UPDATE {$this->table} 
+            SET name = :name, description = :description, price = :price, time = :time 
+            WHERE id = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':name', $service->name);
+    $stmt->bindParam(':description', $service->description);
+    $stmt->bindParam(':price', $service->price);
+    $stmt->bindParam(':time', $service->time);
+    $stmt->bindParam(':id', $service->id);
+    return $stmt->execute();
 }
 
 }
