@@ -36,6 +36,7 @@ services:
       - dbdata:/var/lib/mysql
     networks:
       - app-network
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -47,6 +48,18 @@ services:
       - "8081:80"
     depends_on:
       - db
+    networks:
+      - app-network
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - "9000:9000"
     networks:
       - app-network
 
