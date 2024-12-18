@@ -24,3 +24,5 @@ Route::post('/admin/services/update/{id}', [ServicesController::class, 'update']
 
 //Rota para deletar um serviço
 Route::post('/services/delete/', [ServicesController::class, 'destroy'])->name('services.delete');
+
+
