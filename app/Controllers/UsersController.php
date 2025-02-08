@@ -29,7 +29,6 @@ class UsersController extends Controller
 
     if ($user->isValid()) {
       if ($user->save()) {
-        echo json_encode(['success' => 'Criado com sucesso']);
         $this->render('admin/dashboard/index');
       } else {
         echo json_encode(['error' => 'Erro ao salvar user']);
@@ -41,6 +40,8 @@ class UsersController extends Controller
 
   public function indexCreateBarber(): void
   {
-      $this->render('admin/barbers/create');
+      $users = User::where(['type' => 'barber']);
+
+      $this->render('admin/barbers/create', compact('users', 'users'));
   }
 }

@@ -48,6 +48,27 @@
             <button type="submit" class="bg-[#C78E31] hover:bg-[#B77A28] text-[#5C4033] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cadastrar Barbeiro</button>
         </div>
     </form>
+
+    <!-- Tabela de Barbeiros -->
+    <h2 class="text-3xl font-semibold mb-8 text-center mt-10">Lista de Barbeiros</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+            <tr class="bg-[#5C4033] text-[#F4E1C1]">
+                <th class="py-3 px-4 text-left">Nome</th>
+                <th class="py-3 px-4 text-left">E-mail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($users as $user): ?>
+                <tr class="border-b">
+                    <td class="py-3 px-4"><?= htmlspecialchars($user->name) ?></td>
+                    <td class="py-3 px-4"><?= htmlspecialchars($user->email) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </section>
 
 <footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
