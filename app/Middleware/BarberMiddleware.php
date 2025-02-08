@@ -12,7 +12,7 @@ class BarberMiddleware implements Middleware
 
     public function handle(Request $request): void
     {
-        if (!Auth::check() || !Auth::isAdmin()) {
+        if (!Auth::check() || !Auth::isBarber()) {
             FlashMessage::danger('Você deve ser um administrador para acessar essa página');
             $this->redirectTo(route('indexLogin'));
         }

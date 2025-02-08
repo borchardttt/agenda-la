@@ -12,7 +12,6 @@ class AuthService
     {
         $params = $request->getBody();
         $user = User::findBy(['email' => $params['email']]);
-
         if ($user && $user->authenticate($params['password'])) {
             Auth::login($user);
 
