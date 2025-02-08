@@ -24,23 +24,20 @@ class User extends Model
   public function validates(): void
   {
     Validations::notEmpty('name', $this);
-    Validations::notEmpty('university_registry', $this);
+    Validations::notEmpty('email', $this);
 
-    Validations::uniqueness('university_registry', $this);
+    Validations::uniqueness('email', $this);
 
     if ($this->newRecord()) {
       Validations::passwordConfirmation($this);
     }
   }
 
-  public function authenticate(string $password): bool
-  {
-    if ($this->encrypted_password == null) {
-      return false;
+    public function authenticate(string $password): bool
+    {
+        return hash('sha256', $password) === $this->password;
     }
 
-    return password_verify($password, $this->encrypted_password);
-  }
 
 
   public function __set(string $property, mixed $value): void
@@ -52,7 +49,7 @@ class User extends Model
       $this->newRecord() &&
       $value !== null && $value !== ''
     ) {
-      $this->encrypted_password = password_hash($value, PASSWORD_DEFAULT);
+      $this->password = password_hash($value, PASSWORD_DEFAULT);
     }
   }
   public function getType(): string
