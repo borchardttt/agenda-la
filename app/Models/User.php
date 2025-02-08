@@ -27,10 +27,6 @@ class User extends Model
     Validations::notEmpty('email', $this);
 
     Validations::uniqueness('email', $this);
-
-    if ($this->newRecord()) {
-      Validations::passwordConfirmation($this);
-    }
   }
 
     public function authenticate(string $password): bool
@@ -49,8 +45,7 @@ class User extends Model
       $this->newRecord() &&
       $value !== null && $value !== ''
     ) {
-      $this->password = password_hash($value, PASSWORD_DEFAULT);
-    }
+        $this->password = hash('sha256', $value);    }
   }
   public function getType(): string
   {

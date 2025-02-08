@@ -1,1 +1,60 @@
-<p>teste</p>
+<!-- /app/Views/admin.php -->
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda-la - Painel de Administração</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
+
+<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">
+            <h1>Agenda-la</h1>
+        </div>
+        <nav class="space-x-4">
+            <a href="/admin" class="hover:text-[#D3B18C]">Painel Admin</a>
+            <a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
+            <form action="/logout" method="POST" class="inline">
+                <button type="submit" class="hover:text-[#D3B18C]">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<section class="container mx-auto py-20">
+    <h2 class="text-3xl font-semibold mb-8 text-center">Funcionalidades do Administrador</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+            <div class="text-center">
+                <i class="fas fa-plus-circle text-green-600 text-4xl mb-4"></i>
+                <h3 class="text-xl font-semibold">Cadastrar Serviço</h3>
+                <p class="text-gray-700 mb-4">Adicione novos serviços para os barbeiros oferecerem.</p>
+                <a href="/admin/services" class="bg-[#C78E31] text-[#5C4033] py-2 px-4 rounded-full hover:bg-[#B77A28]">Ir para Cadastrar Serviço</a>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+            <div class="text-center">
+                <i class="fas fa-user-plus text-blue-600 text-4xl mb-4"></i>
+                <h3 class="text-xl font-semibold">Criar Barbeiro</h3>
+                <p class="text-gray-700 mb-4">Cadastre novos barbeiros para o sistema.</p>
+                <a href="/admin/create-barber" class="bg-[#C78E31] text-[#5C4033] py-2 px-4 rounded-full hover:bg-[#B77A28]">Ir para Criar Barbeiro</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
+    <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMT3L8Tz60h7D9Y5JYZ7zPynbD0K/1xqQ8nOw5L" crossorigin="anonymous"></script>
+</body>
+
+</html>

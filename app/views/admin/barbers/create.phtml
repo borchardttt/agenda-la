@@ -1,0 +1,59 @@
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda-la - Criar Barbeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
+
+<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">
+            <h1>Agenda-la</h1>
+        </div>
+        <nav class="space-x-4">
+            <a href="/admin" class="hover:text-[#D3B18C]">Painel Admin</a>
+            <a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
+            <form action="/logout" method="POST" class="inline">
+                <button type="submit" class="hover:text-[#D3B18C]">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<section class="container mx-auto py-20">
+    <h2 class="text-3xl font-semibold mb-8 text-center">Cadastrar Novo Barbeiro</h2>
+    <form action="/admin/create-barber" method="POST" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
+            <input type="text" id="name" name="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Digite o nome do barbeiro">
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">E-mail:</label>
+            <input type="email" id="email" name="email" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Digite o e-mail do barbeiro">
+        </div>
+
+        <input type="hidden" name="type" value="barber">
+
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Senha:</label>
+            <input type="password" id="password" name="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Digite a senha do barbeiro">
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-[#C78E31] hover:bg-[#B77A28] text-[#5C4033] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cadastrar Barbeiro</button>
+        </div>
+    </form>
+</section>
+
+<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
+    <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+
+</html>

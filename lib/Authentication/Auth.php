@@ -30,4 +30,9 @@ class Auth
     {
         unset($_SESSION['user']['id']);
     }
+    public static function isAdmin(): bool
+    {
+        $user = self::user();
+        return $user !== null && $user->getType() === 'admin';
+    }
 }
