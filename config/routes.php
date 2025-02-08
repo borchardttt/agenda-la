@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\BarberScheduleController;
 use App\Controllers\HomeController;
 use App\Controllers\ServicesController;
 use App\Controllers\AuthController;
@@ -39,5 +40,10 @@ Route::middleware('auth')->group(function () {
 
     });
 
+
+    //Rotas protegidas para barbeiro
+    Route::middleware('barber')->group(function () {
+       Route::get('/barber/schedule', [BarberScheduleController::class, 'index'])->name('schedule');
+    });
 
 });

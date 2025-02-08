@@ -9,6 +9,7 @@ class BarberSchedule extends Model
 {
     protected static string $table = 'barber_schedules';
     protected static array $columns = ['barber_id',	'week_days',	'initial_hour',	'final_hour'];
+
     /**
      * @var false|mixed|string
      */

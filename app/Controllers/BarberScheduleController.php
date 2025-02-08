@@ -3,14 +3,19 @@
 namespace App\Controllers;
 
 use App\Services\BarberScheduleService;
+use Core\Http\Controllers\Controller;
 
-class BarberScheduleController
+class BarberScheduleController extends Controller
 {
     private BarberScheduleService $scheduleService;
 
     public function __construct()
     {
         $this->scheduleService = new BarberScheduleService();
+    }
+
+    public function index():void{
+        $this->render('barber/barber-schedule');
     }
 
     public function createSchedule(array $data): void
