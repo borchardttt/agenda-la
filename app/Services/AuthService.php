@@ -47,6 +47,7 @@ class AuthService
     public function destroySession(): void
     {
         Auth::logout();
+        header('Location: ' . 'login');
         echo json_encode(['success' => 'Logout feito com sucesso']);
     }
 }
