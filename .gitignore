@@ -1,6 +1,7 @@
 # Ignore Visual Studio Code settings
 .vscode/
-
+# momentaneo github
+.github
 # Ignore HTML folder
 html
 
