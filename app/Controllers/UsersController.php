@@ -44,4 +44,7 @@ class UsersController extends Controller
 
       $this->render('admin/barbers/create', compact('users', 'users'));
   }
+  public function indexBarbers(): void {
+      $this->render('barber/barber-home');
+  }
 }

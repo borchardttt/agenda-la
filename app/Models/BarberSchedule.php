@@ -7,7 +7,7 @@ use Lib\Validations;
 
 class BarberSchedule extends Model
 {
-    protected static string $table = 'barber_schedules';
+    protected static string $table = 'barbers_schedules';
     protected static array $columns = ['barber_id',	'week_days',	'initial_hour',	'final_hour'];
 
     /**
@@ -23,9 +23,6 @@ class BarberSchedule extends Model
         Validations::notEmpty('barber_id', $this);
         Validations::notEmpty('initial_hour', $this);
         Validations::notEmpty('final_hour', $this);
-
-        if ($this->newRecord()) {
-            Validations::passwordConfirmation($this);
-        }
+        Validations::uniqueness('barber_id', $this);
     }
 }

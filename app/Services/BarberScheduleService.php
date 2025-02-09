@@ -3,19 +3,23 @@
 namespace App\Services;
 
 use App\Models\BarberSchedule;
+use Core\Http\Request;
+use Lib\Authentication\Auth;
 
 class BarberScheduleService
 {
     /**
-     * @param array $data
+     * @param Request $data
      * @return bool
      */
-    public function createSchedule(array $data): bool
+    public function createSchedule(Request $data): bool
     {
-        $barberId = $data['barber_id'];
-        $weekDays = $data['week_days'];
-        $initialHour = $data['initial_hour'];
-        $finalHour = $data['final_hour'];
+        $params = $data->getBody();
+
+        $barberId = Auth::user()->id;
+        $weekDays = $params['week_days'];
+        $initialHour = $params['initial_hour'];
+        $finalHour = $params['final_hour'];
 
         $schedule = new BarberSchedule();
 
