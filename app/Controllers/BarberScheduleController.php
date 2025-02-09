@@ -2,8 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Models\BarberSchedule;
 use App\Services\BarberScheduleService;
 use Core\Http\Controllers\Controller;
+use Core\Http\Request;
+use Lib\Authentication\Auth;
 
 class BarberScheduleController extends Controller
 {
@@ -14,16 +17,19 @@ class BarberScheduleController extends Controller
         $this->scheduleService = new BarberScheduleService();
     }
 
-    public function index():void{
-        $this->render('barber/barber-schedule');
+    public function index():void {
+        $userId = Auth::user()->id;
+        $mySchedule = BarberSchedule::where(['barber_id' => $userId]);
+        $this->render('barber/barber-schedule', compact('mySchedule', 'mySchedule'));
     }
 
-    public function createSchedule(array $data): void
+    public function createSchedule(Request $data): void
     {
         $success = $this->scheduleService->createSchedule($data);
 
         if ($success) {
-            echo json_encode(['success' => 'Agendamento criado com sucesso!']);
+            echo json_encode(['success' => 'Disponibilidade criada com sucesso!']);
+            $this->render('barber/barber-home');
         } else {
             echo json_encode(['error' => 'Erro ao criar o agendamento.']);
         }
