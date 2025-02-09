@@ -4,7 +4,7 @@ use App\Controllers\BarberScheduleController;
 use App\Controllers\HomeController;
 use App\Controllers\ServicesController;
 use App\Controllers\AuthController;
-
+use App\Controllers\ClientController;
 use App\Controllers\UsersController;
 use App\Middleware\AdminMiddleware;
 use Core\Router\Route;
@@ -48,4 +48,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/barber/dashboard', [UsersController::class, 'indexBarbers'])->name('indexBarbers');
     });
 
+    //Rotas protegidas para cliente
+    Route::middleware('client')->group(function () {
+        Route::get('/client/dashboard', [ClientController::class, 'index'])->name('client-dashboard');
+        Route::get('/client/mySchedules', [ClientController::class, 'mySchedules'])->name('client-schedules');
+        Route::get('/client/createSchedule', [ClientController::class, 'indexCreateSchedule'])->name('client-schedule-index');
+    });
+    
 });
