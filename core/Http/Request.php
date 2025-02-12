@@ -108,4 +108,10 @@ class Request
   {
     return $this->headers[$key] ?? null;
   }
+
+    public function validate(array $allowedFields): array
+    {
+        return array_intersect_key($this->getBody(), array_flip($allowedFields));
+    }
+
 }

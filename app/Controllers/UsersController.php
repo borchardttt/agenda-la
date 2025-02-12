@@ -14,18 +14,14 @@ class UsersController extends Controller
 {
   public function register(Request $request): void
   {
-    $params = $request->getBody();
-      unset($params['__stripe_mid']);
-      unset($params['_ga']);
-      unset($params['g_state']);
-      unset($params['_ga_3M6N5587SG']);
-      unset($params['_pk_id_1_1fff']);
-      unset($params['PHPSESSID']);
-      unset($params['portainer_api_key']);
-      unset($params['_gorilla_csrf']);
-      unset($params['phpMyAdmin']);
-      unset($params['pma_lang']);
-      $user = new User($params);
+      $validatedParams = $request->validate([
+          'name',
+          'email',
+          'type',
+          'password',
+      ]);
+
+      $user = new User($validatedParams);
 
     if ($user->isValid()) {
       if ($user->save()) {
