@@ -35,11 +35,6 @@ $ ./run up -d
 $ ./run db:reset
 ```
 
-#### Populate database
-
-```
-$ ./run db:populate
-```
 
 ### Fixed uploads folder permission
 
