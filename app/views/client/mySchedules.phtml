@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Agendamentos - Agenda-la</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
+
+<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">
+            <h1>Agenda-la</h1>
+        </div>
+        <nav class="space-x-4">
+            <a href="/" class="hover:text-[#D3B18C]">Início</a>
+            <a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
+            <a href="/client/mySchedules" class="hover:text-[#D3B18C]">Meus Agendamentos</a>
+        </nav>
+    </div>
+</header>
+
+<section class="container mx-auto py-12">
+<h2>Meus Agendamentos</h2>
+
+<?php if (empty($schedules)): ?>
+    <p>Você ainda não tem agendamentos.</p>
+<?php else: ?>
+    <table border="1">
+        <tr>
+            <th>Data</th>
+            <th>Serviço</th>
+            <th>Barbeiro</th>
+            <th>Status</th>
+        </tr>
+        <?php foreach ($schedules as $schedule): ?>
+            <tr>
+                <td><?= htmlspecialchars($schedule->date) ?></td>
+                <td><?= htmlspecialchars($schedule->service_id) ?></td>
+                <td><?= htmlspecialchars($schedule->barber_id) ?></td>
+                <td><?= htmlspecialchars($schedule->status) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+</section>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/client/mySchedules',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                let tableContent = '';
+                response.forEach(schedule => {
+                    tableContent += `<tr class='border border-gray-300'>
+                        <td class='border border-gray-300 px-4 py-2'>${schedule.date}</td>
+                        <td class='border border-gray-300 px-4 py-2'>${schedule.time}</td>
+                        <td class='border border-gray-300 px-4 py-2'>${schedule.barber}</td>
+                        <td class='border border-gray-300 px-4 py-2'>${schedule.service}</td>
+                        <td class='border border-gray-300 px-4 py-2'>${schedule.status}</td>
+                    </tr>`;
+                });
+                $('#schedulesTable').html(tableContent);
+            },
+            error: function() {
+                $('#schedulesTable').html('<tr><td colspan="5" class="text-center text-red-600 py-4">Erro ao carregar agendamentos.</td></tr>');
+            }
+        });
+    });
+</script>
+
+<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
+    <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+</html>
