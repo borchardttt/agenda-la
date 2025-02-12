@@ -21,6 +21,12 @@ class Auth
         return null;
     }
 
+    public static function id(): ?int
+    {
+        return $_SESSION['user']['id'] ?? null;
+    }
+
+
     public static function check(): bool
     {
         return isset($_SESSION['user']['id']) && self::user() !== null;
