@@ -29,4 +29,10 @@ class Scheduling extends Model
         Validations::notEmpty('status', $this);
         Validations::notEmpty('disapproval_justification', $this);
     }
+
+    public function getMySchedules(int $id)
+    {
+       $schedules = self::where(['client_id' => $id]);
+        
+    }
 }

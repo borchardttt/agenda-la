@@ -51,4 +51,8 @@ class User extends Model
   {
     return $this->type ?? '';
   }
+  public function getName(): string
+  {
+    return $this->name ?? '';
+  }
 }
