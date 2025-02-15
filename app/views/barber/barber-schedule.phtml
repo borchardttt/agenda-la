@@ -1,3 +1,12 @@
+<?php
+use App\Utils\SweetAlert;
+
+if (isset($_SESSION['alert'])) {
+    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
+    $alert->display();
+    unset($_SESSION['alert']);
+}
+?>
 <html lang="pt-BR">
 
 <head>
@@ -15,7 +24,7 @@
             <h1>Agenda-la</h1>
         </div>
         <nav class="space-x-4">
-            <a href="/admin" class="hover:text-[#D3B18C] transition">Painel de Barbeiro</a>
+            <a href="/barber/dashboard" class="hover:text-[#D3B18C] transition">Painel de Barbeiro</a>
             <a href="/barber/my-schedulling" class="hover:text-[#D3B18C] transition">Meus Serviços Agendados</a>
             <a href="/barber/schedule" class="hover:text-[#D3B18C] transition">Gerenciar Horários</a>
             <form action="/logout" method="POST" class="inline">
@@ -82,6 +91,7 @@
                 <th class="py-3 px-4 text-left">Dias da Semana</th>
                 <th class="py-3 px-4 text-left">Hora de Início</th>
                 <th class="py-3 px-4 text-left">Hora Final</th>
+                <th class="py-3 px-4 text-left">Ações</th>
             </tr>
             </thead>
             <tbody>
@@ -98,6 +108,11 @@
                     </td>
                     <td class="py-3 px-4"><?= htmlspecialchars($schedule->initial_hour) ?></td>
                     <td class="py-3 px-4"><?= htmlspecialchars($schedule->final_hour) ?></td>
+                    <td class="py-3 px-4 text-center">
+                        <a href="/barber/schedule/<?= $schedule->id ?>" class="bg-[#F4E1C1] p-2 rounded">
+                            <i class="bx bx-pencil text-xl"></i>
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
 

@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('barber')->group(function () {
        Route::get('/barber/schedule', [BarberScheduleController::class, 'index'])->name('schedule');
         Route::post('/barber/create-schedule', [BarberScheduleController::class, 'createSchedule'])->name('createBarberSchedule');
+        Route::get('/barber/schedule/{id}', [BarberScheduleController::class, 'editScheduleIndex'])->name('editScheduleIndex');
+        Route::post('/barber/schedule/{id}', [BarberScheduleController::class, 'editSchedule'])->name('editSchedule');
         Route::get('/barber/dashboard', [UsersController::class, 'indexBarbers'])->name('indexBarbers');
     });
 
