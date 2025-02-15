@@ -34,4 +34,14 @@ class BarberScheduleController extends Controller
             echo json_encode(['error' => 'Erro ao criar o agendamento.']);
         }
     }
+
+    public function editScheduleIndex(Request $request):void {
+        $id = $request->getParam('id');
+        $schedule = BarberSchedule::findById($id);
+        $this->render('barber/edit-schedule', compact('schedule', 'schedule'));
+    }
+    public function editSchedule(Request $request):void {
+        $params = $request;
+        $this->scheduleService->updateSchedule($params);
+    }
 }
