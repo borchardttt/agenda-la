@@ -27,27 +27,59 @@
 <section class="container mx-auto py-12">
 <h2>Meus Agendamentos</h2>
 
-<?php if (empty($schedules)): ?>
-    <p>Você ainda não tem agendamentos.</p>
-<?php else: ?>
-    <table border="1">
-        <tr>
-            <th>Data</th>
-            <th>Serviço</th>
-            <th>Barbeiro</th>
-            <th>Status</th>
-        </tr>
-        <?php foreach ($schedules as $schedule): ?>
-            <tr>
-                <td><?= htmlspecialchars($schedule->date) ?></td>
-                <td><?= htmlspecialchars($schedule->service_id) ?></td>
-                <td><?= htmlspecialchars($schedule->barber_id) ?></td>
-                <td><?= htmlspecialchars($schedule->status) ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-<?php endif; ?>
-</section>
+        <?php if (empty($formattedSchedules)): ?>
+            <p class="text-gray-700">Você ainda não tem agendamentos.</p>
+        <?php else: ?>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300 bg-white shadow-md rounded-lg">
+                    <thead class="bg-[#D3B18C] text-[#5C4033]">
+                        <tr>
+                            <th class="px-4 py-2 border border-gray-300">Data</th>
+                            <th class="px-4 py-2 border border-gray-300">Horário</th>
+                            <th class="px-4 py-2 border border-gray-300">Serviço</th>
+                            <th class="px-4 py-2 border border-gray-300">Barbeiro</th>
+                            <th class="px-4 py-2 border border-gray-300">Status</th>
+                            <th class="px-4 py-2 border border-gray-300">Comentários</th>
+                            <th class="px-4 py-2 border border-gray-300">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($formattedSchedules as $schedule): ?>
+                            <tr class="hover:bg-gray-100 transition">
+                                <td class="px-4 py-2 border border-gray-300 text-center"><?= $schedule['date'] ?></td>
+                                <td class="px-4 py-2 border border-gray-300 text-center"><?= $schedule['time'] ?></td>
+                                <td class="px-4 py-2 border border-gray-300 text-center"><?= htmlspecialchars($schedule['service']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300 text-center"><?= htmlspecialchars($schedule['barber']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300 text-center">
+                                    <?php
+                                    $statusClass = [
+                                        'Confirmado' => 'bg-green-500 text-white',
+                                        'Pendente' => 'bg-yellow-500 text-white',
+                                        'Cancelado' => 'bg-red-500 text-white'
+                                    ];
+                                    $badgeClass = $statusClass[$schedule['status']] ?? 'bg-gray-500 text-white';
+                                    ?>
+                                    <span class="px-3 py-1 rounded-full text-sm font-semibold <?= $badgeClass ?>">
+                                        <?= htmlspecialchars($schedule['status']) ?>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2 border border-gray-300 text-center"><?= htmlspecialchars($schedule['disapproval_justification']) ?></td>
+                                <td class="px-4 py-2 border border-gray-300 text-center">
+                                    <?php if (isset($schedule['id']) && $schedule['status'] !== 'Cancelado'): ?>
+                                        <form action="/client/cancelSchedule/<?= $schedule['id'] ?>" method="POST" class="inline">
+                                            <button type="submit" class="text-red-600 hover:text-red-800 transition-transform transform hover:scale-110 p-1">
+                                                <i class="bx bx-trash text-xl"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+    </section>
 
 <script>
     $(document).ready(function() {

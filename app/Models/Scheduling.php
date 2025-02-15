@@ -29,4 +29,20 @@ class Scheduling extends Model
         Validations::notEmpty('status', $this);
         Validations::notEmpty('disapproval_justification', $this);
     }
+
+    public function getMySchedules(int $id)
+    {
+       $schedules = self::where(['client_id' => $id]);
+        
+    }
+
+    public static function cancelSchedule(int $id)
+    {
+        $schedule = self::findById($id);
+        $schedule->status = 'canceled';
+
+        $schedule->disapproval_justification = 'Usuário cancelou o agendamento';
+
+        $schedule->save();
+    }
 }
