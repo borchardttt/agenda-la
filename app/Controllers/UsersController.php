@@ -102,4 +102,8 @@ class UsersController extends Controller
 
 
 
+
+  public function schedulingBarbers() : void {
+    $this->render('barber/barber-my-scheduling');
+  }
 }

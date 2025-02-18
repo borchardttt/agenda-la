@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\ServicesController;
 use App\Controllers\AuthController;
 use App\Controllers\ClientController;
+use App\Controllers\NotFoundController;
 use App\Controllers\SettingsController;
 use App\Controllers\UsersController;
 use App\Middleware\AdminMiddleware;
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/barber/dashboard', [UsersController::class, 'indexBarbers'])->name('indexBarbers');
         Route::post('/barber/add-service', [UsersController::class, 'addServiceToBarber'])->name('addService');
         Route::post('/barber/remove-service/{id}', [UsersController::class, 'removeServiceFromBarber'])->name('removeServiceFromBarber');
+        Route::get('/barber/my-scheduling', [UsersController::class, 'schedulingBarbers'])->name('schedulingBarbers');
     });
 
     //Rotas protegidas para cliente
@@ -66,5 +68,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/client/get-barbers-disponibility', [ClientController::class, 'getBarbersDisponibility'])->name('getBarbersDisponibility');
         Route::post('/client/createScheduling', [ClientController::class, 'createScheduling'])->name('createScheduling');
     });
-    
+
 });
