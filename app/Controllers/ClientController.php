@@ -60,13 +60,14 @@ class ClientController extends Controller
         $authUser = Auth::user()->id;
     }
 
-    public function cancelSchedule(Request $request): void
-    {
-        $id = $request->getParam('id');
-        $schedule = Scheduling::cancelSchedule($id);
-
-        echo json_encode(['success' => $schedule]);
-    }
+	public function cancelSchedule(Request $request): void
+	{
+		$id = $request->getParam('id');
+		$schedule = Scheduling::cancelSchedule($id);
+		$_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento cancelado com sucesso!'];
+		header("Location: /client/mySchedules");
+		//echo json_encode(['success' => $schedule]);
+	}
 
     public function createScheduling(Request $request)
     {
