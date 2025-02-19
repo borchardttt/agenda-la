@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/client/dashboard', [ClientController::class, 'index'])->name('client-dashboard');
         Route::get('/client/mySchedules', [ClientController::class, 'mySchedules'])->name('client-schedules');
         Route::get('/client/createSchedule', [ClientController::class, 'indexCreateSchedule'])->name('client-schedule-index');
+        Route::get('/client/get-barbers-disponibility', [ClientController::class, 'getBarbersDisponibility'])->name('getBarbersDisponibility');
+        Route::post('/client/createScheduling', [ClientController::class, 'createScheduling'])->name('createScheduling');
     });
     
 });
