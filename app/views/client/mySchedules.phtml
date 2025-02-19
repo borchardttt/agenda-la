@@ -1,3 +1,12 @@
+<?php
+use App\Utils\SweetAlert;
+
+if (isset($_SESSION['alert'])) {
+    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
+    $alert->display();
+    unset($_SESSION['alert']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -68,7 +77,7 @@
                                     <?php if (isset($schedule['id']) && $schedule['status'] !== 'Cancelado'): ?>
                                         <form action="/client/cancelSchedule/<?= $schedule['id'] ?>" method="POST" class="inline">
                                             <button type="submit" class="text-red-600 hover:text-red-800 transition-transform transform hover:scale-110 p-1">
-                                                <i class="bx bx-trash text-xl"></i>
+                                                <i class='bx bx-x' style='color:#ff0000'  ></i>
                                             </button>
                                         </form>
                                     <?php endif; ?>
