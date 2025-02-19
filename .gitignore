@@ -1,6 +1,7 @@
 # Ignore Visual Studio Code settings
 .vscode/
-
+# momentaneo github
+.github
 # Ignore HTML folder
 html
 
@@ -20,3 +21,5 @@ html
 # Ignore files and folders inside uploads but keep it
 /public/assets/uploads/*
 !/public/assets/uploads/.gitkeep
+
+.idea

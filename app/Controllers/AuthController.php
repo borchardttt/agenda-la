@@ -20,7 +20,8 @@ class AuthController extends Controller
         $this->render('auth/login');
     }
 
-    public function adminIndex(): void {
+    public function adminIndex(): void
+    {
         $this->render('admin/dashboard/index');
     }
 

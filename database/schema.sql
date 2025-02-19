@@ -26,9 +26,9 @@ VALUES ('João', 'joao@agendala.com', SHA2('barbeiroJoao', 256), 'barber');
 CREATE TABLE IF NOT EXISTS `barbers_schedules` (
 `id` INT AUTO_INCREMENT NOT NULL UNIQUE,
 `barber_id` INT NOT NULL,
-`week_days` INT NOT NULL, -- 1 a 7 representando os dias da semana (1=Segunda-feira, 7=Domingo)
-`initial_hour` INT NOT NULL, -- Hora de início (formato 24h)
-`final_hour` INT NOT NULL, -- Hora de término (formato 24h)
+`week_days` VARCHAR(120) NOT NULL, -- 1 a 7 representando os dias da semana (1=Segunda-feira, 7=Domingo)
+`initial_hour` TIME NOT NULL, -- Hora de início (formato 24h)
+`final_hour` TIME NOT NULL, -- Hora de término (formato 24h)
 PRIMARY KEY (`id`)
 );
 

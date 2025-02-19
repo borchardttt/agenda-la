@@ -14,17 +14,33 @@ class UsersController extends Controller
 {
   public function register(Request $request): void
   {
-    $params = $request->getBody();
-    $user = new User($params);
+      $validatedParams = $request->validate([
+          'name',
+          'email',
+          'type',
+          'password',
+      ]);
+
+      $user = new User($validatedParams);
 
     if ($user->isValid()) {
       if ($user->save()) {
-        echo json_encode(['success' => 'Criado com sucesso']);
+        $this->render('admin/dashboard/index');
       } else {
         echo json_encode(['error' => 'Erro ao salvar user']);
       }
     } else {
       echo json_encode(['error' => 'Erro ao criar user']);
     }
+  }
+
+  public function indexCreateBarber(): void
+  {
+      $users = User::where(['type' => 'barber']);
+
+      $this->render('admin/barbers/create', compact('users', 'users'));
+  }
+  public function indexBarbers(): void {
+      $this->render('barber/barber-home');
   }
 }

@@ -12,7 +12,6 @@ class AuthService
     {
         $params = $request->getBody();
         $user = User::findBy(['email' => $params['email']]);
-
         if ($user && $user->authenticate($params['password'])) {
             Auth::login($user);
 
@@ -47,6 +46,7 @@ class AuthService
     public function destroySession(): void
     {
         Auth::logout();
+        header('Location: ' . 'login');
         echo json_encode(['success' => 'Logout feito com sucesso']);
     }
 }
