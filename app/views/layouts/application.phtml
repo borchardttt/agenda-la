@@ -1,44 +1,53 @@
 <?php
 $usersController = new \App\Controllers\UsersController();
 $routes = $usersController->navbar();
+
+$logotypeService = new \App\Services\Logotype([]);
+$logoPath = $logotypeService->path();
+use App\Utils\SweetAlert;
+
+if (isset($_SESSION['alert'])) {
+    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
+    $alert->display();
+    unset($_SESSION['alert']);
+}
 ?>
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Agenda-La! Seu cabelo na Régua</title>
-  <script src="https://cdn.tailwindcss.com"></script> <!-- Carregando Tailwind CSS -->
-
-  <script src="/assets/js/application.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="/assets/css/application.css">
+    <meta charset="UTF-8">
+    <title>Agenda-La! Seu cabelo na Régua</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/application.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/x-icon" href="<?= $logoPath ?>" />
+    <link rel="stylesheet" href="/assets/css/application.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
-<body class="">
-  <?php require '_flash_message.phtml'; ?>
-  <header class="bg-[#5C4033] text-[#F4E1C1] p-6">
-      <div class="container mx-auto flex justify-between items-center">
-          <div class="text-lg font-bold">
-              <h1>Agenda-la</h1>
-          </div>
-          <nav class="space-x-4">
-              <?php foreach ($routes as $route): ?>
-                  <?php if (isset($route['isForm']) && $route['isForm'] === true): ?>
-                      <form action="<?= $route['href'] ?>" method="POST" class="inline">
-                          <button type="submit" class="hover:text-[#D3B18C]"><?= $route['label'] ?></button>
-                      </form>
-                  <?php else: ?>
-                      <a href="<?= $route['href'] ?>" class="hover:text-[#D3B18C]"><?= $route['label'] ?></a>
-                  <?php endif; ?>
-              <?php endforeach; ?>
-          </nav>
-      </div>
-  </header>
+<body>
+<?php require '_flash_message.phtml'; ?>
+<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="<?= $logoPath ?>" alt="Logo" class="w-24 h-24 mr-3 object-contain">
+        </div>
+        <nav class="space-x-4">
+            <?php foreach ($routes as $route): ?>
+                <?php if (isset($route['isForm']) && $route['isForm'] === true): ?>
+                    <form action="<?= $route['href'] ?>" method="POST" class="inline">
+                        <button type="submit" class="hover:text-[#D3B18C]"><?= $route['label'] ?></button>
+                    </form>
+                <?php else: ?>
+                    <a href="<?= $route['href'] ?>" class="hover:text-[#D3B18C]"><?= $route['label'] ?></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </nav>
+    </div>
+</header>
 
-  <?php require $view ?>
+<?php require $view; ?>
 
 </body>
-
 </html>

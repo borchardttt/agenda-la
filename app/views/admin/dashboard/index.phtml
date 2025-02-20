@@ -8,12 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
+<body class="bg-[#D3B18C] font-sans leading-normal tracking-normal min-h-screen flex flex-col">
 
-<section class="container mx-auto py-20">
+<section class="container mx-auto py-20 flex-grow">
     <h2 class="text-3xl font-semibold mb-8 text-center">Funcionalidades do Administrador</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
         <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
             <div class="text-center">
                 <i class="fas fa-plus-circle text-green-600 text-4xl mb-4"></i>
@@ -32,6 +31,15 @@
             </div>
         </div>
 
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+            <div class="text-center">
+                <i class="fas fa-user-plus text-blue-600 text-4xl mb-4"></i>
+                <h3 class="text-xl font-semibold">Configurações Visuais (Logotipo)</h3>
+                <p class="text-gray-700 mb-4">Altere a imagem da logo do Agenda-Lá.</p>
+                <a href="/admin/settings" class="bg-[#C78E31] text-[#5C4033] py-2 px-4 rounded-full hover:bg-[#B77A28]">Ir para Configurações Visuais</a>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -39,7 +47,7 @@
     <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMT3L8Tz60h7D9Y5JYZ7zPynbD0K/1xqQ8nOw5L" crossorigin="anonymous"></script>
 </body>
+
 
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\Logotype;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
 use App\Services\AuthService;
@@ -17,7 +18,10 @@ class AuthController extends Controller
 
     public function index(): void
     {
-        $this->render('auth/login');
+        $settings = [
+            'logoPath' => (new Logotype([]))
+        ];
+        $this->render('auth/login', compact('settings'));
     }
 
     public function adminIndex(): void

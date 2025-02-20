@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\ServicesController;
 use App\Controllers\AuthController;
 use App\Controllers\ClientController;
+use App\Controllers\SettingsController;
 use App\Controllers\UsersController;
 use App\Middleware\AdminMiddleware;
 use Core\Router\Route;
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/create-barber', [UsersController::class, 'indexCreateBarber'])->name('create-barber');
         Route::post('/admin/create-barber', [UsersController::class, 'register'])->name('create-barber-ṕost');
+        // Rotas de configurações (Settings)
+        Route::get('/admin/settings', [SettingsController::class, 'index'])->name('settings');
+        Route::post('/admin/settings/logo/update', [SettingsController::class, 'updateLogo'])->name('settings.logo.update');
+        Route::post('/admin/settings/logo/delete', [SettingsController::class, 'deleteLogo'])->name('settings.logo.delete');
 
     });
 

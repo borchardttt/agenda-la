@@ -1,0 +1,56 @@
+<section class="container mx-auto py-20">
+    <h2 class="text-3xl font-semibold mb-8 text-center">Alterar Logotipo</h2>
+
+    <form action="/admin/settings/logo/update" method="POST" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="mb-4 text-center">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Pré-visualização da Logo:</label>
+            <img id="logoPreview"
+                 src="<?= $settings['logoPath'] ?? '/assets/images/defaults/logotype.png'; ?>"
+                 alt="Preview da Logo"
+                 class="mx-auto w-40 h-40 object-contain border rounded-lg">
+        </div>
+
+        <div class="mb-4">
+            <label for="logo" class="block text-gray-700 text-sm font-bold mb-2">Selecionar nova logo:</label>
+            <input type="file" id="logo" name="logo" accept="image/*" required onchange="previewLogo(event)"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-[#C78E31] hover:bg-[#B77A28] text-[#5C4033] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Atualizar Logo
+            </button>
+            <button type="button" onclick="deleteLogo()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Remover Logo
+            </button>
+        </div>
+    </form>
+</section>
+
+<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center">
+    <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    function previewLogo(event) {
+        const preview = document.getElementById('logoPreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function deleteLogo() {
+        if (confirm('Tem certeza que deseja remover o logotipo?')) {
+            fetch('/admin/settings/logo/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(() => window.location.reload());
+        }
+    }
+</script>
