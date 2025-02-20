@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\Logotype;
 use Core\Http\Controllers\Controller;
+use Lib\Authentication\Auth;
 
 class SettingsController extends Controller
 {
@@ -34,5 +35,45 @@ class SettingsController extends Controller
         $logotype->update();
 
         $this->redirectTo('/admin/settings');
+    }
+    public function navbar() : array
+    {
+        $user = Auth::user();
+
+        $routes = [];
+
+        if ($user) {
+            switch ($user->type) {
+                case 'client':
+                    $routes = [
+                        ['href' => '/', 'label' => 'Início'],
+                        ['href' => '/client/createSchedule', 'label' => 'Criar Agendamentos'],
+                        ['href' => '/client/mySchedules', 'label' => 'Meus Agendamentos'],
+                    ];
+                    break;
+                case 'barber':
+                    $routes = [
+                        ['href' => '/barber/dashboard', 'label' => 'Painel de Barbeiro'],
+                        ['href' => '/barber/my-schedulling', 'label' => 'Meus Serviços Agendados'],
+                        ['href' => '/barber/schedule', 'label' => 'Gerenciamento de Barbeiro'],
+                    ];
+                    break;
+                case 'admin':
+                    $routes = [
+                        ['href' => '/admin', 'label' => 'Painel Admin'],
+                        ['href' => '/admin/services', 'label' => 'Serviços'],
+                        ['href' => '/admin/create-barber', 'label' => 'Barbeiros'],
+                    ];
+                    break;
+            }
+            $routes[] = ['href' => '/logout', 'label' => 'Logout', 'isForm' => true];
+        } else {
+            $routes = [
+                ['href' => '/', 'label' => 'Início'],
+                ['href' => '/login', 'label' => 'Entrar'],
+            ];
+        }
+        return $routes;
+
     }
 }

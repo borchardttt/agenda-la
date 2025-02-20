@@ -1,6 +1,6 @@
 <?php
-$usersController = new \App\Controllers\UsersController();
-$routes = $usersController->navbar();
+$settings = new \App\Controllers\SettingsController();
+$routes = $settings->navbar();
 
 $logotypeService = new \App\Services\Logotype([]);
 $logoPath = $logotypeService->path();

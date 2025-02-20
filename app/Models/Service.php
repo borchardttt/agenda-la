@@ -14,7 +14,13 @@ class Service extends Model
 
   public function validates(): void
   {
-
+      Validations::notEmpty('name', $this);
+      Validations::notEmpty('price', $this);
+      Validations::notEmpty('time', $this);
   }
 
+  public function barbers()
+  {
+    return $this->belongsToMany(User::class, BarberService::class, 'service_id', 'barber_id');
+  }
 }

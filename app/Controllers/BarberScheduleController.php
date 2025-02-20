@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\BarberSchedule;
+use App\Models\BarberService;
+use App\Models\Service;
 use App\Services\BarberScheduleService;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
@@ -18,9 +20,11 @@ class BarberScheduleController extends Controller
     }
 
     public function index():void {
-        $userId = Auth::user()->id;
+        $userId = Auth::id();
         $mySchedule = BarberSchedule::where(['barber_id' => $userId]);
-        $this->render('barber/barber-schedule', compact('mySchedule', 'mySchedule'));
+        $services = Service::all();
+        $myServices = BarberService::where(['barber_id' => $userId]);
+        $this->render('barber/barber-schedule', compact('mySchedule',  'services', 'myServices'));
     }
 
     public function createSchedule(Request $data): void
@@ -28,10 +32,10 @@ class BarberScheduleController extends Controller
         $success = $this->scheduleService->createSchedule($data);
 
         if ($success) {
-            echo json_encode(['success' => 'Disponibilidade criada com sucesso!']);
-            $this->render('barber/barber-home');
+            $_SESSION['alert'] = ['type' => 'success', 'message' => 'Disponibilidade cadastrada com sucesso!'];
+            $this->redirectTo('barber/barber-home');
         } else {
-            echo json_encode(['error' => 'Erro ao criar o agendamento.']);
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao cadastrar disponibilidade!'];
         }
     }
 
