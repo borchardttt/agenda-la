@@ -1,11 +1,10 @@
 <?php
 $settings = new \App\Controllers\SettingsController();
 $routes = $settings->navbar();
-
 $logotypeService = new \App\Services\Logotype([]);
 $logoPath = $logotypeService->path();
+use Lib\Authentication\Auth;
 use App\Utils\SweetAlert;
-
 if (isset($_SESSION['alert'])) {
     $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
     $alert->display();
@@ -19,11 +18,14 @@ if (isset($_SESSION['alert'])) {
     <title>Agenda-La! Seu cabelo na Régua</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/assets/js/application.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/x-icon" href="<?= $logoPath ?>" />
     <link rel="stylesheet" href="/assets/css/application.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
 <body>
@@ -33,7 +35,7 @@ if (isset($_SESSION['alert'])) {
         <div class="flex items-center">
             <img src="<?= $logoPath ?>" alt="Logo" class="w-24 h-24 mr-3 object-contain">
         </div>
-        <nav class="space-x-4">
+        <nav class="flex space-x-4">
             <?php foreach ($routes as $route): ?>
                 <?php if (isset($route['isForm']) && $route['isForm'] === true): ?>
                     <form action="<?= $route['href'] ?>" method="POST" class="inline">
@@ -43,6 +45,12 @@ if (isset($_SESSION['alert'])) {
                     <a href="<?= $route['href'] ?>" class="hover:text-[#D3B18C]"><?= $route['label'] ?></a>
                 <?php endif; ?>
             <?php endforeach; ?>
+            <div class="flex">
+                <?php if (Auth::user()): ?>
+                    <span class="font-semibold text-lg text-[#F4E1C1]"> <?= Auth::user()->name ?> </span>
+                    <i class='bx bx-user-circle text-2xl mr-2'></i>
+                <?php endif; ?>
+            </div>
         </nav>
     </div>
 </header>

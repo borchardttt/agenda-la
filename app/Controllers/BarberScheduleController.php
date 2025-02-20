@@ -33,7 +33,7 @@ class BarberScheduleController extends Controller
 
         if ($success) {
             $_SESSION['alert'] = ['type' => 'success', 'message' => 'Disponibilidade cadastrada com sucesso!'];
-            $this->redirectTo('barber/barber-home');
+            $this->redirectTo('barber/barber-schedule');
         } else {
             $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao cadastrar disponibilidade!'];
         }
