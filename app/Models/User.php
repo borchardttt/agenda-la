@@ -51,4 +51,10 @@ class User extends Model
   {
     return $this->type ?? '';
   }
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'barbers_services', 'barber_id', 'service_id');
+    }
+
+
 }

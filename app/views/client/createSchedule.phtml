@@ -1,27 +1,15 @@
-<?php
-use App\Utils\SweetAlert;
-
-if (isset($_SESSION['alert'])) {
-    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
-    $alert->display();
-    unset($_SESSION['alert']);
-}
-?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendamentos - Agenda-la</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Flatpickr CSS -->
+    <title>Agende seu Horário</title>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
-
-
 <section class="flex justify-center items-center py-12">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
         <h2 class="text-2xl font-semibold text-center text-[#5C4033] mb-6">Agende seu horário</h2>
@@ -31,25 +19,33 @@ if (isset($_SESSION['alert'])) {
                 <select id="barber_id" name="barber_id" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C78E31]" required>
                     <option value="">Selecione um barbeiro</option>
                     <?php foreach ($barbers as $barber) : ?>
-                        <option value="<?= $barber->id ?>" data-availability='<?= json_encode($barbersDisponibility[$barber->id] ?? []) ?>'>
+                        <option value="<?= $barber->id ?>"
+                                data-services='<?= json_encode(array_map(function($service) {
+                                    return [
+                                        'id' => $service->id,
+                                        'name' => $service->attributes['name'],
+                                    ];
+                                }, $barbersServices[$barber->id] ?? [])) ?>'
+                                data-availability='<?= json_encode($barbersDisponibility[$barber->id] ?? []) ?>'>
                             <?= $barber->name ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
+
             </div>
+
             <div class="mb-4">
                 <label for="service_id" class="block text-[#5C4033] font-medium mb-2">Escolha o serviço</label>
                 <select id="service_id" name="service_id" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C78E31]" required>
                     <option value="">Selecione um serviço</option>
-                    <?php foreach ($services as $service) : ?>
-                        <option value="<?= $service->id ?>"><?= $service->name ?></option>
-                    <?php endforeach; ?>
                 </select>
             </div>
+
             <div class="mb-4">
                 <label for="date" class="block text-[#5C4033] font-medium mb-2">Data e Hora</label>
                 <input type="text" id="date" name="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C78E31]" required>
             </div>
+
             <button type="submit" class="w-full bg-[#C78E31] text-[#5C4033] py-3 rounded-lg text-lg font-semibold hover:bg-[#D3B18C]">
                 Confirmar Agendamento
             </button>
@@ -63,6 +59,8 @@ if (isset($_SESSION['alert'])) {
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const barberSelect = document.getElementById("barber_id");
+        const serviceSelect = document.getElementById("service_id");
         let datetimePicker = flatpickr("#date", {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
@@ -73,9 +71,20 @@ if (isset($_SESSION['alert'])) {
             maxTime: "18:00"
         });
 
-        document.getElementById("barber_id").addEventListener("change", function () {
+        barberSelect.addEventListener("change", function () {
             const selectedOption = this.options[this.selectedIndex];
-            const barberAvailability = JSON.parse(selectedOption.getAttribute('data-availability') || '{}');
+            const services = JSON.parse(selectedOption.getAttribute("data-services") || "[]");
+            const barberAvailability = JSON.parse(selectedOption.getAttribute("data-availability") || "{}");
+
+            // Limpa os serviços anteriores
+            serviceSelect.innerHTML = '<option value="">Selecione um serviço</option>';
+            services.forEach(service => {
+                console.log(service)
+                let option = document.createElement("option");
+                option.value = service.id;
+                option.textContent = service.name;
+                serviceSelect.appendChild(option);
+            });
 
             if (Object.keys(barberAvailability).length > 0) {
                 updateAvailableDays(barberAvailability.week_days, datetimePicker);

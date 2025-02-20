@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\BarberSchedule;
+use App\Models\BarberService;
 use Core\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Service;
@@ -20,16 +21,44 @@ class ClientController extends Controller
 
     public function indexCreateSchedule(): void
     {
+        // Extrair todos os barbeiros do sistema
         $barbers = User::where(['type' => 'barber']);
-        $services = Service::all();
+
+        $barbersServices = [];
+
+        // Loop para cada barbeiro
+        foreach ($barbers as $barber) {
+            $barberServices = BarberService::where(['barber_id' => $barber->id]);
+
+            // Extrair os service_id
+            $serviceIds = [];
+            foreach ($barberServices as $barberService) {
+                $serviceIds[] = $barberService->service_id;
+            }
+
+            $services = [];
+            foreach ($serviceIds as $serviceId) {
+                $service = Service::findBy(['id' => $serviceId]);
+                if ($service) {
+                    $services[] = $service;
+                }
+            }
+
+            $barbersServices[$barber->id] = $services;
+        }
+
 
         $barbersDisponibility = [];
         foreach ($barbers as $barber) {
             $barbersDisponibility[$barber->id] = $this->getBarbersDisponibility($barber->id);
         }
 
-        $this->render('client/createSchedule', compact('barbers', 'services', 'barbersDisponibility'));
+        // Renderizar a view
+        $this->render('client/createSchedule', compact('barbers', 'barbersServices', 'barbersDisponibility'));
     }
+
+
+
 
     public function mySchedules()
     {
@@ -39,14 +68,13 @@ class ClientController extends Controller
 
         $formattedSchedules = [];
         foreach ($schedules as $schedule) {
-
             $formattedSchedules[] = [
                 'id' => $schedule->id,
                 'dateAux' => $schedule->date,
                 'date' => date('d/m/Y', strtotime($schedule->date)),
                 'time' => date('H:i', strtotime($schedule->date)),
                 'barber' => User::where(['id' => $schedule->barber_id])[0]->name ?? 'Desconhecido',
-				'service' => Service::where(['id' => $schedule->service_id])[0]->name ?? 'Indefinido',
+                'service' => Service::where(['id' => $schedule->service_id])[0]->name ?? 'Indefinido',
                 'status' => StatusEnum::getName($schedule->status),
                 'disapproval_justification' => $schedule->disapproval_justification ?? 'Sem comentários',
             ];
@@ -60,16 +88,16 @@ class ClientController extends Controller
         $authUser = Auth::user()->id;
     }
 
-	public function cancelSchedule(Request $request): void
-	{
-		$id = $request->getParam('id');
-		$schedule = Scheduling::cancelSchedule($id);
-		$_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento cancelado com sucesso!'];
-		header("Location: /client/mySchedules");
-		//echo json_encode(['success' => $schedule]);
-	}
+    public function cancelSchedule(Request $request): void
+    {
+        $id = $request->getParam('id');
+        $schedule = Scheduling::cancelSchedule($id);
+        $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento cancelado com sucesso!'];
+        header("Location: /client/mySchedules");
+        //echo json_encode(['success' => $schedule]);
+    }
 
-    public function createScheduling(Request $request) : void
+    public function createScheduling(Request $request): void
     {
         $params = $request->validate([
             'barber_id',
@@ -88,12 +116,10 @@ class ClientController extends Controller
 
         if ($schedule->save()) {
             $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento criado com sucesso!'];
-
         } else {
             $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao criar agendamento!'];
         }
-        header("Location: /client/createSchedule");
-
+        $this->redirectTo("Location: /client/createSchedule");
     }
 
     private function getBarbersDisponibility(int $barberId): array

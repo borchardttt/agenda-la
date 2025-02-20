@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\BarberService;
+use App\Models\Service;
 use App\Models\User;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
@@ -49,45 +51,55 @@ class UsersController extends Controller
       return Auth::user();
   }
 
-    public function navbar()
+    public function addServiceToBarber(Request $request): void
     {
-        $user = $this->getAuthenticatedUser();
+        $barberId = Auth::id();
 
-        $routes = [];
-
-        if ($user) {
-            switch ($user->type) {
-                case 'client':
-                    $routes = [
-                        ['href' => '/', 'label' => 'Início'],
-                        ['href' => '/client/createSchedule', 'label' => 'Criar Agendamentos'],
-                        ['href' => '/client/mySchedules', 'label' => 'Meus Agendamentos'],
-                    ];
-                    break;
-                case 'barber':
-                    $routes = [
-                        ['href' => '/admin', 'label' => 'Painel de Barbeiro'],
-                        ['href' => '/barber/my-schedulling', 'label' => 'Meus Serviços Agendados'],
-                        ['href' => '/barber/schedule', 'label' => 'Gerenciar Horários'],
-                    ];
-                    break;
-                case 'admin':
-                    $routes = [
-                        ['href' => '/admin', 'label' => 'Painel Admin'],
-                        ['href' => '/admin/services', 'label' => 'Serviços'],
-                        ['href' => '/admin/create-barber', 'label' => 'Barbeiros'],
-                    ];
-                    break;
-            }
-            $routes[] = ['href' => '/logout', 'label' => 'Logout', 'isForm' => true];
-        } else {
-            $routes = [
-                ['href' => '/', 'label' => 'Início'],
-                ['href' => '/login', 'label' => 'Entrar'],
-            ];
+        $validatedParams = $request->validate([
+            'service_ids',
+        ]);
+        if (empty($validatedParams['service_ids'])) {
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Selecione um serviço!'];
+            $this->redirectTo('/barber/schedule');
+            return;
         }
-        return $routes;
 
+        $barber = User::findById($barberId);
+
+        if (!$barber || $barber->getType() !== 'barber') {
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Barbeiro não encontrado!'];
+            $this->redirectTo('/barber/schedule');
+            return;
+        }
+
+        foreach ($validatedParams['service_ids'] as $serviceId) {
+            if ($barber->services()->exists($serviceId)) {
+                $_SESSION['alert'] = ['type' => 'error', 'message' => "O serviço com ID $serviceId já está associado a este barbeiro."];
+                $this->redirectTo('/barber/schedule');
+                return;
+            }
+            $barber->services()->attach($serviceId);
+        }
+
+        $_SESSION['alert'] = ['type' => 'success', 'message' => 'Serviço(s) adicionado(s) com sucesso!'];
+        $this->redirectTo('/barber/schedule');
     }
+
+    public function removeServiceFromBarber(Request $request): void {
+      $validatedRequest = $request->validate([
+          'id'
+      ]);
+      $barberService = BarberService::findById($validatedRequest['id']);
+      if($barberService->destroy()) {
+          $_SESSION['alert'] = ['type' => 'success', 'message' => 'Serviço deletado com sucesso!'];
+
+          $this->redirectTo('/barber/schedule');
+      } else {
+          $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao deletar serviço!'];
+          $this->redirectTo('/barber/schedule');
+      }
+    }
+
+
 
 }

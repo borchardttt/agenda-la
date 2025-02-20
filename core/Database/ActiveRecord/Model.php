@@ -329,6 +329,39 @@ abstract class Model
     }
 
     /**
+     * @param string $column Nome da coluna
+     * @param array<int, mixed> $values Lista de valores para o WHERE IN
+     * @return array<static>
+     */
+    public static function whereIn(string $column, array $values): array
+    {
+        if (empty($values)) {
+            return [];
+        }
+
+        $table = static::$table;
+        $attributes = implode(', ', static::$columns);
+
+        $placeholders = implode(',', array_fill(0, count($values), '?'));
+
+        $sql = "SELECT id, {$attributes} FROM {$table} WHERE {$column} IN ({$placeholders})";
+
+        $pdo = Database::getDatabaseConn();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($values);
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $models = [];
+
+        foreach ($rows as $row) {
+            $models[] = new static($row);
+        }
+
+        return $models;
+    }
+
+
+    /**
      * @param array<string, mixed> $conditions
      */
     public static function findBy($conditions): ?static

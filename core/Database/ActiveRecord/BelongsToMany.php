@@ -80,4 +80,31 @@ class BelongsToMany
 
         return $rows[0]['total'];
     }
+
+    public function attach(int $relatedId): void
+    {
+        $sql = "INSERT INTO {$this->pivot_table} ({$this->from_foreign_key}, {$this->to_foreign_key}) VALUES (:from_id, :to_id)";
+
+        $pdo = Database::getDatabaseConn();
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindValue(':from_id', $this->model->id);
+        $stmt->bindValue(':to_id', $relatedId);
+        $stmt->execute();
+    }
+
+    public function exists(int $serviceId): bool
+    {
+        $pdo = Database::getDatabaseConn();
+
+        $sql = "SELECT COUNT(*) FROM {$this->pivot_table} WHERE {$this->from_foreign_key} = :barber_id AND {$this->to_foreign_key} = :service_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':barber_id', $this->model->id);
+        $stmt->bindValue(':service_id', $serviceId);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+
 }

@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/barber/schedule/{id}', [BarberScheduleController::class, 'editScheduleIndex'])->name('editScheduleIndex');
         Route::post('/barber/schedule/{id}', [BarberScheduleController::class, 'editSchedule'])->name('editSchedule');
         Route::get('/barber/dashboard', [UsersController::class, 'indexBarbers'])->name('indexBarbers');
+        Route::post('/barber/add-service', [UsersController::class, 'addServiceToBarber'])->name('addService');
+        Route::post('/barber/remove-service/{id}', [UsersController::class, 'removeServiceFromBarber'])->name('removeServiceFromBarber');
     });
 
     //Rotas protegidas para cliente

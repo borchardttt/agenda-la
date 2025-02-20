@@ -61,6 +61,16 @@ CREATE TABLE IF NOT EXISTS `scheduling` (
 PRIMARY KEY (`id`)
 );
 
+CREATE TABLE IF NOT EXISTS `barbers_services` (
+       `id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+      `barber_id` INT NOT NULL,
+      `service_id` INT NOT NULL,
+      PRIMARY KEY (`barber_id`, `service_id`),
+      FOREIGN KEY (`barber_id`) REFERENCES `users`(`id`),
+      FOREIGN KEY (`service_id`) REFERENCES `services`(`id`)
+);
+
+
 -- Adicionando as chaves estrangeiras
 ALTER TABLE `barbers_schedules`
 ADD CONSTRAINT `barbers_schedules_fk1` FOREIGN KEY (`barber_id`) REFERENCES `users`(`id`);
