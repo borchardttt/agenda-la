@@ -21,16 +21,13 @@ class ClientController extends Controller
 
     public function indexCreateSchedule(): void
     {
-        // Extrair todos os barbeiros do sistema
         $barbers = User::where(['type' => 'barber']);
 
         $barbersServices = [];
 
-        // Loop para cada barbeiro
         foreach ($barbers as $barber) {
             $barberServices = BarberService::where(['barber_id' => $barber->id]);
 
-            // Extrair os service_id
             $serviceIds = [];
             foreach ($barberServices as $barberService) {
                 $serviceIds[] = $barberService->service_id;
@@ -53,7 +50,6 @@ class ClientController extends Controller
             $barbersDisponibility[$barber->id] = $this->getBarbersDisponibility($barber->id);
         }
 
-        // Renderizar a view
         $this->render('client/createSchedule', compact('barbers', 'barbersServices', 'barbersDisponibility'));
     }
 
