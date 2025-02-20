@@ -12,7 +12,7 @@ class Authenticate implements Middleware
     public function handle(Request $request): void
     {
         if (!Auth::check()) {
-            FlashMessage::danger('Você deve estar logado para acessar essa página');
+            $_SESSION['alert'] = ['type' => 'warning', 'message' => 'Você deve estar autenticado para acessar essa página página!'];
             $this->redirectTo(route('users.login'));
         }
     }

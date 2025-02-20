@@ -12,7 +12,7 @@ class AdminMiddleware implements Middleware
     public function handle(Request $request): void
     {
         if (!Auth::check() || !Auth::isAdmin()) {
-            FlashMessage::danger('Você deve ser um administrador para acessar essa página');
+            $_SESSION['alert'] = ['type' => 'warning', 'message' => 'Você deve ser um administrador para acessar essa página!'];
             $this->redirectTo(route('indexLogin'));
         }
     }
