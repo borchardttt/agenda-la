@@ -69,7 +69,7 @@ class ClientController extends Controller
 		//echo json_encode(['success' => $schedule]);
 	}
 
-    public function createScheduling(Request $request)
+    public function createScheduling(Request $request) : void
     {
         $params = $request->validate([
             'barber_id',
@@ -87,10 +87,13 @@ class ClientController extends Controller
         $schedule->disapproval_justification = ' ';
 
         if ($schedule->save()) {
-            return json_encode(['status' => 'ok']);
+            $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento criado com sucesso!'];
+
         } else {
-            echo json_encode(['status' => 'error']);
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao criar agendamento!'];
         }
+        header("Location: /client/createSchedule");
+
     }
 
     private function getBarbersDisponibility(int $barberId): array

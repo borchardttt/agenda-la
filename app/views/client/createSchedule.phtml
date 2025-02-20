@@ -1,3 +1,12 @@
+<?php
+use App\Utils\SweetAlert;
+
+if (isset($_SESSION['alert'])) {
+    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
+    $alert->display();
+    unset($_SESSION['alert']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,18 +21,6 @@
 </head>
 <body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
 
-<header class="bg-[#5C4033] text-[#F4E1C1] p-6">
-    <div class="container mx-auto flex justify-between items-center">
-        <div class="text-lg font-bold">
-            <h1>Agenda-la</h1>
-        </div>
-        <nav class="space-x-4">
-            <a href="/" class="hover:text-[#D3B18C]">Início</a>
-            <a href="/services" class="hover:text-[#D3B18C]">Serviços</a>
-            <a href="/client/mySchedules" class="hover:text-[#D3B18C]">Meus Agendamentos</a>
-        </nav>
-    </div>
-</header>
 
 <section class="flex justify-center items-center py-12">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">

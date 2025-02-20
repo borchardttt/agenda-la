@@ -43,4 +43,51 @@ class UsersController extends Controller
   public function indexBarbers(): void {
       $this->render('barber/barber-home');
   }
+
+  public function getAuthenticatedUser(): ?User
+  {
+      return Auth::user();
+  }
+
+    public function navbar()
+    {
+        $user = $this->getAuthenticatedUser();
+
+        $routes = [];
+
+        if ($user) {
+            switch ($user->type) {
+                case 'client':
+                    $routes = [
+                        ['href' => '/', 'label' => 'Início'],
+                        ['href' => '/client/createSchedule', 'label' => 'Criar Agendamentos'],
+                        ['href' => '/client/mySchedules', 'label' => 'Meus Agendamentos'],
+                    ];
+                    break;
+                case 'barber':
+                    $routes = [
+                        ['href' => '/admin', 'label' => 'Painel de Barbeiro'],
+                        ['href' => '/barber/my-schedulling', 'label' => 'Meus Serviços Agendados'],
+                        ['href' => '/barber/schedule', 'label' => 'Gerenciar Horários'],
+                    ];
+                    break;
+                case 'admin':
+                    $routes = [
+                        ['href' => '/admin', 'label' => 'Painel Admin'],
+                        ['href' => '/admin/services', 'label' => 'Serviços'],
+                        ['href' => '/admin/create-barber', 'label' => 'Barbeiros'],
+                    ];
+                    break;
+            }
+            $routes[] = ['href' => '/logout', 'label' => 'Logout', 'isForm' => true];
+        } else {
+            $routes = [
+                ['href' => '/', 'label' => 'Início'],
+                ['href' => '/login', 'label' => 'Entrar'],
+            ];
+        }
+        return $routes;
+
+    }
+
 }

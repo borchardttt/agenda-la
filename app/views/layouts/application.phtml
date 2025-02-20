@@ -1,3 +1,7 @@
+<?php
+$usersController = new \App\Controllers\UsersController();
+$routes = $usersController->navbar();
+?>
 <html lang="pt-br">
 
 <head>
@@ -14,8 +18,27 @@
 
 <body class="">
   <?php require '_flash_message.phtml'; ?>
+  <header class="bg-[#5C4033] text-[#F4E1C1] p-6">
+      <div class="container mx-auto flex justify-between items-center">
+          <div class="text-lg font-bold">
+              <h1>Agenda-la</h1>
+          </div>
+          <nav class="space-x-4">
+              <?php foreach ($routes as $route): ?>
+                  <?php if (isset($route['isForm']) && $route['isForm'] === true): ?>
+                      <form action="<?= $route['href'] ?>" method="POST" class="inline">
+                          <button type="submit" class="hover:text-[#D3B18C]"><?= $route['label'] ?></button>
+                      </form>
+                  <?php else: ?>
+                      <a href="<?= $route['href'] ?>" class="hover:text-[#D3B18C]"><?= $route['label'] ?></a>
+                  <?php endif; ?>
+              <?php endforeach; ?>
+          </nav>
+      </div>
+  </header>
 
   <?php require $view ?>
+
 </body>
 
 </html>
