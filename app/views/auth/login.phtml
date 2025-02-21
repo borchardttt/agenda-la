@@ -1,3 +1,13 @@
+<?php
+use App\Utils\SweetAlert;
+
+if (isset($_SESSION['alert'])) {
+    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
+    $alert->display();
+    unset($_SESSION['alert']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -36,6 +46,7 @@
 
             <p id="errorMessage" class="text-red-600 text-center mt-4 hidden"></p>
         </form>
+        <div class="content-center text-center"><a class="text-blue-600" href="/register-user" >Não possui conta? Clique aqui</a></div>
     </div>
 </section>
 

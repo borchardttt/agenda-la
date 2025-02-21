@@ -114,7 +114,7 @@ class Router
                 return $controller;
             }
         }
-        header('Location:' . '404');
+        header('/404');
         return false;
         //return throw new HTTPException('URI ' . $request->getUri() . ' not found.', 404);
     }

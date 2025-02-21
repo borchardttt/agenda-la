@@ -17,6 +17,9 @@ Route::get('/login', [AuthController::class, 'index'])->name('indexLogin');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/register-user', [AuthController::class, 'indexRegisterUser'])->name('indexLogin');
+Route::post('/create-client', [UsersController::class, 'createClient'])->name('create-client-post');
+
 Route::get('/services', [ServicesController::class, 'index'])->name('services');
 
 Route::middleware('auth')->group(function () {
@@ -70,3 +73,4 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+Route::get('/404', [NotFoundController::class, 'index'])->name('not-found');

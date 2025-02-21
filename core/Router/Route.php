@@ -148,25 +148,9 @@ class Route
         return new RouteWrapperMiddleware($middleware);
     }
 
-    public static function validateRoute(Request $request): void
-    {
-        $routeFound = false;
-
-        // Obtém todas as rotas da instância do roteador (assumindo que Router tem um método para obter as rotas)
-        $routes = Router::getInstance()->getRoutes();
-
-        foreach ($routes as $route) {
-            if ($route->match($request)) {
-                $routeFound = true;
-                break;
-            }
-        }
-
-        if (!$routeFound) {
-            // Caso a rota não seja encontrada, redireciona para a página 404
-            header("HTTP/1.0 404 Not Found");
-            include('404.php'); // Exibe a página de erro 404
-            exit();
-        }
+    public function redirectToNotFound(){
+      dd(['teste']);
+      header("/404");
+      exit;
     }
 }
