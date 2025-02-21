@@ -114,7 +114,9 @@ class Router
                 return $controller;
             }
         }
-        return throw new HTTPException('URI ' . $request->getUri() . ' not found.', 404);
+        header('/404');
+        return false;
+        //return throw new HTTPException('URI ' . $request->getUri() . ' not found.', 404);
     }
 
     public static function init(): void

@@ -1,0 +1,71 @@
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda-la - Visualizar agendamentos</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-[#F4E1C1] font-sans leading-normal tracking-normal">
+
+<header class="bg-[#5C4033] text-[#F4E1C1] p-6 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <div class="text-lg font-bold">
+            <h1>Agenda-la</h1>
+        </div>
+        <nav class="space-x-4">
+            <a href="/admin" class="hover:text-[#D3B18C] transition">Painel de Barbeiro</a>
+            <a href="/barber/my-schedulling" class="hover:text-[#D3B18C] transition">Meus Serviços Agendados</a>
+            <a href="/barber/schedule" class="hover:text-[#D3B18C] transition">Gerenciar Horários</a>
+            <form action="/logout" method="POST" class="inline">
+                <button type="submit" class="hover:text-[#D3B18C] transition">Logout</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+
+<section class="container mx-auto py-10">
+    <h2 class="text-3xl font-semibold text-center text-[#5C4033]">Minha agenda</h2>
+
+    <div class="overflow-x-auto mt-6">
+        <table class="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead>
+            <tr class="bg-[#5C4033] text-[#F4E1C1] text-lg">
+                <th class="py-3 px-4 text-left">Dia da Semana</th>
+                <th class="py-3 px-4 text-left">Cliente</th>
+                <th class="py-3 px-4 text-left">Serviço</th>
+                <th class="py-3 px-4 text-left">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<footer class="bg-[#5C4033] text-[#F4E1C1] py-6 text-center mt-10 shadow-md">
+    <p>&copy; 2024 Agenda-la. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            const checkIndicator = this.parentNode.querySelector(".check-indicator svg");
+            if (this.checked) {
+                checkIndicator.classList.remove("hidden");
+                this.parentNode.classList.add("bg-green-100", "border-green-500");
+            } else {
+                checkIndicator.classList.add("hidden");
+                this.parentNode.classList.remove("bg-green-100", "border-green-500");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

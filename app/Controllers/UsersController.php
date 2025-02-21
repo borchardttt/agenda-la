@@ -36,6 +36,26 @@ class UsersController extends Controller
     }
   }
 
+  public function createClient(Request $data)
+  {
+      $params = $data->getBody();
+
+      $user = new User();
+
+      $user->name = $params['name'];
+      $user->email = $params['email'];
+      $user->type = $params['type'];
+      $user->password = $params['password'];
+
+      if($user->save()){
+        $_SESSION['alert'] = ['type' => 'success', 'message' => 'Sua conta foi criada com sucesso, acessa com suas credenciais!'];
+        $this->render('auth/login');
+        header("Location: /login");
+      } else {
+        return json_encode(['error' => 'Erro ao criar user, usuário já existe']);
+      };
+  }
+
   public function indexCreateBarber(): void
   {
       $users = User::where(['type' => 'barber']);
@@ -102,4 +122,8 @@ class UsersController extends Controller
 
 
 
+
+  public function schedulingBarbers() : void {
+    $this->render('barber/barber-my-scheduling');
+  }
 }

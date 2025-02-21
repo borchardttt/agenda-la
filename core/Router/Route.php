@@ -147,4 +147,10 @@ class Route
     {
         return new RouteWrapperMiddleware($middleware);
     }
+
+    public function redirectToNotFound(){
+      dd(['teste']);
+      header("/404");
+      exit;
+    }
 }

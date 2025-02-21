@@ -24,6 +24,11 @@ class AuthController extends Controller
         $this->render('auth/login', compact('settings'));
     }
 
+    public function indexRegisterUser(): void
+    {
+      $this->render('auth/register-user');
+    }
+
     public function adminIndex(): void
     {
         $this->render('admin/dashboard/index');
