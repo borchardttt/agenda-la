@@ -1,13 +1,3 @@
-<?php
-use App\Utils\SweetAlert;
-
-if (isset($_SESSION['alert'])) {
-    $alert = new SweetAlert($_SESSION['alert']['type'], $_SESSION['alert']['message']);
-    $alert->display();
-    unset($_SESSION['alert']);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
