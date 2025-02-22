@@ -44,6 +44,7 @@ class Scheduling extends Model
         $schedule->disapproval_justification = 'Usuário cancelou o agendamento';
 
         $schedule->save();
+        $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento cancelado com sucesso!'];
     }
 
     public static function canCreate(int $barberId, string $date, int $serviceId): bool
@@ -51,7 +52,10 @@ class Scheduling extends Model
         $service = Service::findById($serviceId);
         $serviceTime = $service->time;
 
-        $schedules = self::whereRaw("barber_id = ? AND DATE(date) = ?", [$barberId, date('Y-m-d', strtotime($date))]);
+        $schedules = self::whereRaw(
+            "barber_id = ? AND DATE(date) = ? AND status = ?",
+            [$barberId, date('Y-m-d', strtotime($date)), 'confirmed']
+        );
 
 
         usort($schedules, fn($a, $b) => strtotime($a->date) <=> strtotime($b->date));
