@@ -101,21 +101,26 @@ class ClientController extends Controller
             'date',
             'time',
         ]);
-
-        $schedule = new Scheduling();
-        $schedule->client_id = Auth::user()->id;
-        $schedule->barber_id = $params['barber_id'];
-        $schedule->service_id = $params['service_id'];
-        $schedule->date = $params['date'];
-        $schedule->status = 'confirmed';
-        $schedule->disapproval_justification = ' ';
-
-        if ($schedule->save()) {
-            $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento criado com sucesso!'];
+        $canCreate = Scheduling::canCreate($params['barber_id'], $params['date'], $params['service_id']);
+        if ($canCreate) {
+            $schedule = new Scheduling();
+            $schedule->client_id = Auth::user()->id;
+            $schedule->barber_id = $params['barber_id'];
+            $schedule->service_id = $params['service_id'];
+            $schedule->date = $params['date'];
+            $schedule->status = 'confirmed';
+            $schedule->disapproval_justification = ' ';
+            if ($schedule->save()) {
+                $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento criado com sucesso!'];
+            } else {
+                $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao criar agendamento!'];
+            }
         } else {
-            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao criar agendamento!'];
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Já existem agendamentos nesse horário para o barbeiro!'];
+            $this->redirectTo('createSchedule');
         }
-        $this->redirectTo("Location: /client/createSchedule");
+
+        $this->redirectTo("createSchedule");
     }
 
     private function getBarbersDisponibility(int $barberId): array
