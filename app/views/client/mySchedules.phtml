@@ -12,10 +12,15 @@
 
 
 <section class="container mx-auto py-12">
-<h2>Meus Agendamentos</h2>
-
         <?php if (empty($formattedSchedules)): ?>
-            <p class="text-gray-700">Você ainda não tem agendamentos.</p>
+            <div class="flex flex-col items-center justify-center text-center bg-white shadow-md rounded-lg p-10 max-w-lg mx-auto mt-10">
+                <i class="bx bx-calendar-x text-6xl text-red-500 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-[#5C4033] mb-2">Nenhum agendamento encontrado</h3>
+                <p class="text-gray-600 mb-4">Parece que você ainda não agendou nenhum serviço. Que tal marcar um horário agora?</p>
+                <a href="/client/createSchedule" class="px-6 py-2 bg-[#D3B18C] text-[#5C4033] font-semibold rounded-md shadow-md hover:bg-[#c2a17a] transition-all">
+                    Explorar Serviços
+                </a>
+            </div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full border-collapse border border-gray-300 bg-white shadow-md rounded-lg">
