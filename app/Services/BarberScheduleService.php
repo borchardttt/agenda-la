@@ -16,7 +16,7 @@ class BarberScheduleService
     {
         $params = $data->getBody();
 
-        $barberId = Auth::user()->id;
+        $barberId = Auth::user()->id ?? $params['barber_id'];
         $weekDays = $params['week_days'];
         $initialHour = $params['initial_hour'];
         $finalHour = $params['final_hour'];

@@ -51,8 +51,7 @@ class UsersController extends Controller
 
         if ($user->save()) {
             $_SESSION['alert'] = ['type' => 'success', 'message' => 'Sua conta foi criada com sucesso, acessa com suas credenciais!'];
-            $this->render('auth/login');
-            header("Location: /login");
+            $this->redirectTo('/login');
         } else {
             return json_encode(['error' => 'Erro ao criar user, usuário já existe']);
         };
