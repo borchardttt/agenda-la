@@ -328,6 +328,22 @@ abstract class Model
         return $models;
     }
 
+    public static function whereRaw(string $sql, array $params = []): array
+    {
+        $table = static::$table;
+        $attributes = implode(', ', static::$columns);
+
+        $sql = "SELECT id, {$attributes} FROM {$table} WHERE {$sql}";
+
+        $pdo = Database::getDatabaseConn();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(fn($row) => new static($row), $rows);
+    }
+
+
     /**
      * @param string $column Nome da coluna
      * @param array<int, mixed> $values Lista de valores para o WHERE IN

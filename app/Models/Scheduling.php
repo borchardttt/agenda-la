@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Core\Database\ActiveRecord\Model;
+use DateTime;
 use Lib\Validations;
 
 class Scheduling extends Model
@@ -32,8 +33,7 @@ class Scheduling extends Model
 
     public function getMySchedules(int $id)
     {
-       $schedules = self::where(['client_id' => $id]);
-        
+        $schedules = self::where(['client_id' => $id]);
     }
 
     public static function cancelSchedule(int $id)
@@ -45,4 +45,35 @@ class Scheduling extends Model
 
         $schedule->save();
     }
+
+    public static function canCreate(int $barberId, string $date, int $serviceId): bool
+    {
+        $service = Service::findById($serviceId);
+        $serviceTime = $service->time;
+
+        $schedules = self::whereRaw("barber_id = ? AND DATE(date) = ?", [$barberId, date('Y-m-d', strtotime($date))]);
+
+
+        usort($schedules, fn($a, $b) => strtotime($a->date) <=> strtotime($b->date));
+
+
+        $newDateTime = new DateTime($date);
+
+        foreach ($schedules as $schedule) {
+            $scheduledDateTime = new DateTime($schedule->date);
+
+            $scheduledService = Service::findById($schedule->service_id);
+            $scheduledServiceTime = $scheduledService->time;
+
+            $scheduledEndTime = clone $scheduledDateTime;
+            $scheduledEndTime->modify("+{$scheduledServiceTime} minutes");
+
+            if ($newDateTime >= $scheduledDateTime && $newDateTime < $scheduledEndTime) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
