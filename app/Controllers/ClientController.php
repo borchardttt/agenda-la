@@ -88,8 +88,8 @@ class ClientController extends Controller
     {
         $id = $request->getParam('id');
         $schedule = Scheduling::cancelSchedule($id);
-        $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento cancelado com sucesso!'];
-        header("Location: /client/mySchedules");
+        $this->redirectTo(route('client-schedules'));
+
         //echo json_encode(['success' => $schedule]);
     }
 

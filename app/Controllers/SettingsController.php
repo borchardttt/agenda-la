@@ -54,7 +54,7 @@ class SettingsController extends Controller
                 case 'barber':
                     $routes = [
                         ['href' => '/barber/dashboard', 'label' => 'Painel de Barbeiro'],
-                        ['href' => '/barber/my-schedulling', 'label' => 'Meus Serviços Agendados'],
+                        ['href' => '/barber/my-scheduling', 'label' => 'Meus Serviços Agendados'],
                         ['href' => '/barber/schedule', 'label' => 'Gerenciamento de Barbeiro'],
                     ];
                     break;

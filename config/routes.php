@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/barber/add-service', [UsersController::class, 'addServiceToBarber'])->name('addService');
         Route::post('/barber/remove-service/{id}', [UsersController::class, 'removeServiceFromBarber'])->name('removeServiceFromBarber');
         Route::get('/barber/my-scheduling', [UsersController::class, 'schedulingBarbers'])->name('schedulingBarbers');
+        Route::post('/barber/cancel-scheduling/{id}', [UsersController::class, 'cancelSchedullingBarber'])->name('cancelScheduling');
     });
 
     //Rotas protegidas para cliente
