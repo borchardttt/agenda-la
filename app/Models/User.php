@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Core\Database\ActiveRecord\BelongsTo;
+use Core\Database\ActiveRecord\BelongsToMany;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 
@@ -15,19 +16,19 @@ use Core\Database\ActiveRecord\Model;
  */
 class User extends Model
 {
-  protected static string $table = 'users';
-  protected static array $columns = ['name', 'email', 'password', 'type'];
+    protected static string $table = 'users';
+    protected static array $columns = ['name', 'email', 'password', 'type'];
 
-  protected ?string $password = null;
-  protected ?string $password_confirmation = null;
+    protected ?string $password = null;
+    protected ?string $password_confirmation = null;
 
-  public function validates(): void
-  {
-    Validations::notEmpty('name', $this);
-    Validations::notEmpty('email', $this);
+    public function validates(): void
+    {
+        Validations::notEmpty('name', $this);
+        Validations::notEmpty('email', $this);
 
-    Validations::uniqueness('email', $this);
-  }
+        Validations::uniqueness('email', $this);
+    }
 
     public function authenticate(string $password): bool
     {
@@ -36,25 +37,24 @@ class User extends Model
 
 
 
-  public function __set(string $property, mixed $value): void
-  {
-    parent::__set($property, $value);
+    public function __set(string $property, mixed $value): void
+    {
+        parent::__set($property, $value);
 
-    if (
-      $property === 'password' &&
-      $this->newRecord() &&
-      $value !== null && $value !== ''
-    ) {
-        $this->password = hash('sha256', $value);    }
-  }
-  public function getType(): string
-  {
-    return $this->type ?? '';
-  }
-    public function services()
+        if (
+            $property === 'password' &&
+            $this->newRecord() &&
+            $value !== null && $value !== ''
+        ) {
+            $this->password = hash('sha256', $value);
+        }
+    }
+    public function getType(): string
+    {
+        return $this->type ?? '';
+    }
+    public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class, 'barbers_services', 'barber_id', 'service_id');
     }
-
-
 }
