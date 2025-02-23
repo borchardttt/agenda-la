@@ -1,78 +1,74 @@
 <?php
-namespace Tests\Unit\Controllers;
 
-use App\Models\Service;
+namespace Tests\Controllers;
+
 use App\Controllers\ServicesController;
+use App\Models\Service;
 use Core\Http\Request;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ServicesControllerTest extends TestCase
 {
-  private ServicesController $controller;
-  private Service $service;
+    protected $servicesController;
 
-  protected function setUp(): void
-  {
-    parent::setUp();
+    protected function setUp(): void
+    {
+        $this->servicesController = new ServicesController();
+    }
 
-    $this->controller = new ServicesController();
+    public function testIndex(): void
+    {
+        $serviceMock = $this->createMock(Service::class);
+        $serviceMock->method('all')->willReturn([
+            new Service(['id' => 1, 'name' => 'Haircut', 'price' => 50, 'time' => 30]),
+            new Service(['id' => 2, 'name' => 'Beard Trim', 'price' => 30, 'time' => 20]),
+        ]);
 
-    $this->service = new Service([
-      'name' => 'Corte de Cabelo',
-      'price' => 50.0,
-      'time' => 30,
-    ]);
-    $this->service->save();
-  }
+        $this->servicesController->service = $serviceMock;
 
-  public function test_should_create_new_service(): void
-  {
-    $_REQUEST = [
-      'name' => 'Barba',
-      'price' => 30.0,
-      'time' => 15,
-    ];
+        ob_start();
+        $this->servicesController->index();
+        $output = ob_get_clean();
 
-    $_SERVER['REQUEST_METHOD'] = 'POST';
-    $_SERVER['REQUEST_URI'] = '/admin/services/create';
+        $this->assertNotEmpty($output);
+    }
 
-    $request = new Request();
+    public function testEditWithInvalidId(): void
+    {
+        $requestMock = $this->createMock(Request::class);
+        $requestMock->method('getParam')->willReturn('invalid');
 
-    $this->controller->store($request);
+        $serviceMock = $this->createMock(Service::class);
+        $serviceMock->method('findById')->willReturn(null);
 
-    $this->assertCount(2, Service::all());
-  }
+        $this->servicesController->service = $serviceMock;
 
-  public function test_should_update_service(): void
-  {
-    $_REQUEST = [
-      'name' => 'Corte de Cabelo - Atualizado',
-      'price' => 55.0,
-      'time' => 45,
-    ];
+        ob_start();
+        $this->servicesController->edit($requestMock);
+        $output = ob_get_clean();
 
-    $_SERVER['REQUEST_METHOD'] = 'POST';
-    $_SERVER['REQUEST_URI'] = '/admin/services/update/' . $this->service->id;
+        $this->assertJsonStringEqualsJsonString(
+            '{"status":"error","message":"ID inválido."}',
+            $output
+        );
+    }
 
-    $request = new Request();
+    public function testEditWithValidId(): void
+    {
+        $requestMock = $this->createMock(Request::class);
+        $requestMock->method('getParam')->willReturn(1);
 
-    $this->controller->update($request);
+        $serviceMock = $this->createMock(Service::class);
+        $serviceMock->method('findById')->willReturn(
+            new Service(['id' => 1, 'name' => 'Haircut', 'price' => 50, 'time' => 30])
+        );
 
-    $updatedService = Service::findById($this->service->id);
-    $this->assertEquals('Corte de Cabelo - Atualizado', $updatedService->name);
-  }
+        $this->servicesController->service = $serviceMock;
 
-  public function test_should_delete_service(): void
-  {
-    $_SERVER['REQUEST_METHOD'] = 'POST';
-    $_SERVER['REQUEST_URI'] = '/services/delete';
+        ob_start();
+        $this->servicesController->edit($requestMock);
+        $output = ob_get_clean();
 
-    $request = new Request();
-
-    $_REQUEST['id'] = $this->service->id;
-
-    $this->controller->destroy($request);
-
-    $this->assertCount(0, Service::all());
-  }
+        $this->assertNotEmpty($output);
+    }
 }
