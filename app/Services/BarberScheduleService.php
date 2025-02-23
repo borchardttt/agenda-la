@@ -31,44 +31,26 @@ class BarberScheduleService
         return $schedule->save();
     }
 
-    public function updateSchedule(Request $data): void {
-        $params = $data->validate([
-            'id',
-            'week_days',
-            'initial_hour',
-            'final_hour',
-        ]);
+    public function updateSchedule(array $data): bool
+    {
+        $params = $data;
 
         if (!isset($params['id'])) {
             $_SESSION['alert'] = ['type' => 'error', 'message' => 'ID do agendamento não informado!'];
-            header("Location: /barber/schedule");
-            exit;
+            return false;
         }
 
         $schedule = BarberSchedule::findById($params['id']);
 
         if (!$schedule) {
             $_SESSION['alert'] = ['type' => 'error', 'message' => 'Agendamento não encontrado!'];
-            header("Location: /barber/schedule");
-            exit;
+            return false;
         }
 
         if (isset($params['week_days']) && is_array($params['week_days'])) {
             $params['week_days'] = json_encode($params['week_days']);
         }
 
-        $updateSuccess = $schedule->update($params);
-
-        if ($updateSuccess) {
-            $_SESSION['alert'] = ['type' => 'success', 'message' => 'Agendamento atualizado com sucesso!'];
-        } else {
-            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao alterar agendamento!'];
-        }
-
-        header("Location: /barber/schedule");
-        exit;
+        return $schedule->update($params);
     }
-
-
-
 }

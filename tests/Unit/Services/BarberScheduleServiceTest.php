@@ -4,27 +4,119 @@ namespace Tests\Unit\Services;
 
 use Core\Http\Request;
 use App\Services\BarberScheduleService;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class BarberScheduleServiceTest extends TestCase
 {
+    private BarberScheduleService $service;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->service = new BarberScheduleService();
+    }
+
+    /**
+     * @throws Exception
+     */
     public function testCreateScheduleSuccessfully(): void
     {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['REQUEST_URI'] = '/barber/create-schedule';
-        $_REQUEST = [
-            'barber_id' => 1,
+        $request = $this->createMock(Request::class);
+
+        $request->method('getBody')->willReturn([
+            'barber_id' => 2,
             'week_days' => [0, 2, 3],
-            'initial_hour' => '8:30:00',
-            'final_hour' => '9:30:00',
-        ];
+            'initial_hour' => '08:30:00',
+            'final_hour' => '09:30:00',
+        ]);
 
-        $request = new Request();
+        $result = $this->service->createSchedule($request);
 
-        $service = new BarberScheduleService();
-        $result = $service->createSchedule($request);
+        $this->assertTrue($result);
+    }
 
-        $this->assertNotNull($result);
-        $this->assertEquals(true, $result);
+    /**
+     * @throws Exception
+     */
+    public function testCreateScheduleFail(): void
+    {
+        $request = $this->createMock(Request::class);
+        $request->method('getBody')->willReturn([
+            'barber_id' => 2,
+            'week_days' => [0, 2, 3],
+            'initial_hour' => '08:30:00',
+            'final_hour' => '09:30:00',
+        ]);
+        $result = $this->service->createSchedule($request);
+        $this->assertFalse($result);
+    }
+
+    public function testUpdateScheduleSuccessfully(): void
+    {
+        $request = $this->createMock(Request::class);
+        $request->method('getBody')->willReturn([
+        'id' => 12,
+        'week_days' => [0, 1, 2],
+        'initial_hour' => '10:00:00',
+        'final_hour' => '11:00:00',
+        ]);
+        $validatedRequest = $request->validate([
+            'id',
+            'week_days',
+            'initial_hour',
+            'final_hour',
+        ]);
+
+        $result = $this->service->updateSchedule($validatedRequest);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateScheduleWithMissingId(): void
+    {
+        $request = $this->createMock(Request::class);
+        $request->method('getBody')->willReturn([
+            'week_days' => [0, 2, 3],
+            'initial_hour' => '08:30:00',
+            'final_hour' => '09:30:00',
+        ]);
+        $validatedRequest = $request->validate([
+            'id',
+            'week_days',
+            'initial_hour',
+            'final_hour',
+        ]);
+
+        $result = $this->service->updateSchedule($validatedRequest);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testUpdateScheduleNotFound(): void
+    {
+        $request = $this->createMock(Request::class);
+        $request->method('getBody')->willReturn([
+            'id' => 999,
+            'week_days' => [0, 1, 2],
+            'initial_hour' => '10:00:00',
+            'final_hour' => '11:00:00',
+        ]);
+        $validatedRequest = $request->validate([
+            'id',
+            'week_days',
+            'initial_hour',
+            'final_hour',
+        ]);
+
+        $result = $this->service->updateSchedule($validatedRequest);
+
+        $this->assertFalse($result);
     }
 }
