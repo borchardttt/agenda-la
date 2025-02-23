@@ -51,4 +51,5 @@ class Auth
         $user = self::user();
         return $user !== null && $user->getType() === 'client';
     }
+
 }
