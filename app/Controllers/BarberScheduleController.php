@@ -19,12 +19,13 @@ class BarberScheduleController extends Controller
         $this->scheduleService = new BarberScheduleService();
     }
 
-    public function index():void {
+    public function index(): void
+    {
         $userId = Auth::id();
         $mySchedule = BarberSchedule::where(['barber_id' => $userId]);
         $services = Service::all();
         $myServices = BarberService::where(['barber_id' => $userId]);
-        $this->render('barber/barber-schedule', compact('mySchedule',  'services', 'myServices'));
+        $this->render('barber/barber-schedule', compact('mySchedule', 'services', 'myServices'));
     }
 
     public function createSchedule(Request $data): void
@@ -39,13 +40,30 @@ class BarberScheduleController extends Controller
         }
     }
 
-    public function editScheduleIndex(Request $request):void {
+    public function editScheduleIndex(Request $request): void
+    {
         $id = $request->getParam('id');
         $schedule = BarberSchedule::findById($id);
         $this->render('barber/edit-schedule', compact('schedule', 'schedule'));
     }
-    public function editSchedule(Request $request):void {
-        $params = $request;
-        $this->scheduleService->updateSchedule($params);
+    public function editSchedule(Request $request): void
+    {
+        $params = $request->validate([
+            'id',
+            'week_days',
+            'initial_hour',
+            'final_hour',
+        ]);
+
+        $success = $this->scheduleService->updateSchedule($params);
+
+        if ($success) {
+            $_SESSION['alert'] = ['type' => 'success', 'message' => 'Disponibilidade editada com sucesso!'];
+        } else {
+            $_SESSION['alert'] = ['type' => 'error', 'message' => 'Erro ao editar disponibilidade!'];
+        }
+
+        $this->redirectTo("/barber/schedule");
+        exit;
     }
 }
