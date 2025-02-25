@@ -32,7 +32,7 @@ class SettingsController extends Controller
     public function deleteLogo(): void
     {
         $logotype = new Logotype([]);
-        $logotype->update();
+        $logotype->removeOldImage();
 
         $this->redirectTo('/admin/settings');
     }
