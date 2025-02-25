@@ -20,8 +20,7 @@ class Logotype
         $fullPath = Constants::rootPath()->join("public" . $logoPath);
 
         if (file_exists($fullPath)) {
-            $hash = filemtime($fullPath);
-            return $logoPath . '?v=' . $hash;
+            return $logoPath;
         }
 
         return "/assets/images/defaults/logotype.png";
@@ -36,12 +35,12 @@ class Logotype
         }
     }
 
-    private function getTmpFilePath(): string
+    public function getTmpFilePath(): string
     {
         return $this->image['tmp_name'];
     }
 
-    private function removeOldImage(): void
+    public function removeOldImage(): void
     {
         $oldFilePath = $this->getAbsoluteFilePath();
         if (file_exists($oldFilePath)) {
